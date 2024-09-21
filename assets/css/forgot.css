@@ -1,0 +1,240 @@
+@import url("https://fonst.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
+}
+:root {
+  --blue: #1877f2;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+.container {
+  display: flex;
+  width: 80%;
+  gap: 100px;
+  justify-content: center;
+  align-items: center;
+}
+.logo {
+  width: 35%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+.logo p {
+  font-size: 24px;
+  line-height: 28px;
+  width: auto;
+  color: #000000;
+  text-align: left;
+  font-weight: 300;
+}
+
+.logo img {
+  height: 170px;
+  width: 170px;
+}
+
+body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+::selection {
+  color: #ececec;
+  background-color: #00b3ff;
+}
+
+.form {
+  position: relative;
+  background: #dfe3f3;
+
+  width: 500px;
+  border-radius: 12px;
+  box-shadow: -3px 3px 10px -5px rgba(0, 0, 0, 0.2);
+  padding: 30px 30px;
+}
+
+.form h2 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.form form {
+  margin: 8px 0;
+  margin-top: 10px;
+}
+
+.form form .profile-img {
+  position: absolute;
+  top: -15px;
+  right: 0;
+  width: 65px;
+  height: 65px;
+  margin: 18px 30px;
+  background: #f2f3f7;
+  background-image: url("https://media.istockphoto.com/id/1393750072/vector/flat-white-icon-man-for-web-design-silhouette-flat-illustration-vector-illustration-stock.jpg?s=612x612&w=0&k=20&c=s9hO4SpyvrDIfELozPpiB_WtzQV9KhoMUP9R9gVohoU=");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 50%;
+}
+.gender-radio {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.gender-one {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 36px;
+  width: calc(100% / 3);
+  background-color: white;
+}
+.form form .input .gender-radio input[type="radio"] {
+  height: 15px;
+  width: 20px;
+  margin-top: 0px;
+}
+
+.file-upload {
+  position: absolute;
+  top: 0;
+  right: -15px;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #d2d3d7;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #006692, #f2f3f7 50%);
+  background-size: 100% 200%;
+  transition: all 1s;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+form input[type="file"] {
+  position: absolute;
+  left: -10px;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  z-index: 1;
+  opacity: 0;
+  padding: 20px;
+}
+
+.form form .error-text {
+  display: none;
+  color: #851923;
+  padding: 4px 6px;
+  text-align: left;
+  border-radius: 4px;
+
+  margin-top: 10px;
+}
+
+.form form .input {
+  margin-top: 10px;
+}
+
+.form .grid-details {
+  display: flex;
+}
+
+.form .grid-details .input:first-child {
+  margin-right: 8px;
+  width: 100%;
+}
+
+.form .grid-details .input:last-child {
+  margin-left: 8px;
+  width: 100%;
+}
+
+.form form .input input,
+.email {
+  height: 36px;
+  width: 100%;
+  padding: 0 8px;
+  font-size: 14px;
+  border: 1px solid #a5a3a3;
+  outline: none;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+/* .form form .input input:focus, */
+.form form .input input:valid {
+  border: 1px solid #17cf6a;
+  transition: 0.1s ease;
+  outline: none;
+}
+
+.form form input.button {
+  height: 45px;
+  border: none;
+  color: #f2f3f7;
+  width: 100%;
+  background: #006692;
+  font-size: 17px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 13px;
+  border: 2px solid #2983aa;
+}
+
+.form .link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 17px;
+}
+
+.form .link a {
+  text-decoration: none;
+  transition: 0.5s all;
+  color: var(--blue);
+}
+
+.form .link a:hover {
+  text-decoration: underline;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: rgb(169, 165, 165);
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.form form .forgot {
+  height: auto;
+
+  margin-top: 25px;
+}

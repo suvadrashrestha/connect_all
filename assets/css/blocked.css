@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+.content {
+  border: 1px solid red;
+  background-color: #e0e7ec;
+  width: 40%;
+  height: 300px;
+  border-radius: 30px;
+  position: relative;
+}
+a {
+  text-align: center;
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  background-color: rgb(68, 68, 244);
+
+  bottom: 10%;
+  left: 40%;
+  border-radius: 20px;
+  outline: none;
+  border: 1px solid gray;
+  color: white;
+  font-size: 18px;
+}
+p {
+  font-size: 18px;
+}
+a:hover {
+  outline: none;
+  border: 1px solid gray;
+}
+a:focus {
+  outline: none;
+}

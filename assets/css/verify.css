@@ -1,0 +1,118 @@
+.fields-input {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  margin: 15px 0;
+}
+.otp-field {
+  border-radius: 5px;
+  font-size: 34px;
+  height: 80px;
+  width: 400px;
+  border: 1px solid #cacaca;
+  text-align: center;
+  outline: none;
+  margin: 2px;
+  padding: 10px;
+}
+.otp-field::-webkit-inner-spin-button,
+.otp-field::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.otp-field:valid {
+  border-color: #309538;
+  box-shadow: 0 10px -5px rgba(0, 0, 0, 0.25);
+}
+
+@media only screen and (max-width: 455px) {
+  .otp-field {
+    font-size: 55px;
+    height: 80px;
+    width: 80px;
+  }
+}
+
+.form form .input input:valid {
+  border: 1px solid #17cf6a;
+  transition: 0.1s ease;
+  outline: none;
+}
+
+.form form input.button {
+  height: 45px;
+  border: none;
+  color: #f2f3f7;
+  width: 100%;
+  background: #006692;
+  font-size: 17px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 13px;
+  border: 2px solid #2983aa;
+}
+
+.form .link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 17px;
+}
+
+.form .link a {
+  text-decoration: none;
+  transition: 0.5s all;
+  color: rgb(28, 28, 143);
+  font-weight: 600;
+}
+
+.form .link a:hover {
+  text-decoration: underline;
+}
+.form {
+  background: #dfe3f3;
+
+  width: 500px;
+  border-radius: 12px;
+  box-shadow: -3px 3px 10px -5px rgba(0, 0, 0, 0.2);
+  padding: 30px 30px;
+}
+
+.form h2 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.form form {
+  margin: 8px 0;
+  margin-top: 10px;
+}
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+.form form .error-text {
+  display: none;
+  color: #b11323;
+  background-color: #ffb4bc;
+  padding: 4px 6px;
+  text-align: left;
+  border-radius: 4px;
+  width: 400px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.main .form form .resend {
+  display: block;
+  color: #017c26;
+  background-color: #8ae2b2;
+  padding: 4px 6px;
+  text-align: left;
+  border-radius: 4px;
+  width: 400px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
