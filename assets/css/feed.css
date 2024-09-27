@@ -6,12 +6,16 @@ body {
   flex-direction: column;
   background-color: #eeeeee;
   /* margin-left: 30px;
-  margin-right: 30px;  */
+margin-right: 30px;  */
 }
-.header img {
+.header img:nth-child(1) {
   width: 45px;
   height: 45px;
   border-radius: 30px;
+}
+.name {
+  margin-top: 5px;
+  color: gray;
 }
 .header input:focus {
   border: 1px solid gray !important;
@@ -20,7 +24,7 @@ body {
 .header input {
   border: 1px solid gray;
   width: 30%;
-  height: 40px;
+  height: 20px;
   border-radius: 20px;
   padding: 10px 20px;
   font-size: medium;
@@ -30,7 +34,7 @@ body {
   top: 0px;
   bottom: 0px;
   width: 100%;
-  height: 60px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,16 +51,18 @@ body {
   border-radius: 50%;
 }
 .profile-bar {
-  display: flex;
   height: 60px;
+  display: flex;
+  padding: 0px 5px;
+  justify-content: space-between;
 }
 .profile-post {
   /* width: 685px; Set the width of the div */
   height: 500px; /* Set the height of the div */
   overflow: hidden;
   /* background-size: cover;
-  background-position: center; 
-  background-repeat: no-repeat; */
+background-position: center; 
+background-repeat: no-repeat; */
 }
 .profile-post img {
   /* width: 100%; */
@@ -97,11 +103,13 @@ textarea {
 }
 
 .user-menu {
+  /* border: 1px solid red; */
   list-style-type: none;
   display: flex;
   justify-content: space-between; /* Distributes items with equal space between */
   padding: 0;
   margin: 0;
+  align-items: center;
 }
 
 .user-menu a {
@@ -121,19 +129,21 @@ button {
 }
 
 button:hover {
-  background-color: #438ddb;
+  background-color: #c3d0de;
   color: black;
 }
 /* .side-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
+display: flex;
+flex-direction: column;
+gap: 10px;
+width: 100%;
 } */
 .empty {
   border: 1px solid red;
 }
 .follow {
+  padding: 5px 10px;
+  margin-bottom: 15px;
   display: flex;
   height: 40px;
   justify-content: space-between;
@@ -159,24 +169,65 @@ button:hover {
   }
 }
 
-/* @media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-
-  .container {
-    width: 100%; 
-  }
-  .header {
-    width: 100%; 
-  }
-}
-.sign {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 16px;
+/* .header .link-button {
+  background-color: blue;
+  border-radius: 10px;
+  height: 20px;
+  padding: 10px;
 } */
+.empty-section {
+  display: flex;
+  margin-top: 60px;
+  gap: 20px;
+}
+.user-info {
+  flex: 1.5;
+  box-shadow: 2px 2px 4px #888888;
+  background-color: #fff;
+  border-radius: 10px;
+  height: 50vh;
+}
+.email {
+  margin-top: -10px;
+  color: gray;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Arrow icon */
+.dropdown-btn {
+  background: none;
+  padding: 5px 10px;
+  color: black;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Optionally styling the arrow */
+.dropdown-btn:after {
+  content: "\25BC"; /* Down arrow */
+  margin-left: 8px;
+}

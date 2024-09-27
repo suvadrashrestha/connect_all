@@ -151,4 +151,30 @@ if(isset($_GET['verifycode'])){
 
 
 }
+
+if(isset($_GET['updateprofile'])){
+    // print_r($_POST); 
+    //   print_r($_FILES);
+
+ 
+
+    $response=validateUpdateForm($_POST,$_FILES['profile_pic']);
+    // print_r($response);
+
+if($response['status']){
+   if( updateprofile($_POST,$_FILES['profile_pic'])){
+    header("location: ../../?editprofile=success");
+   }
+   else{
+        echo"something is wrong";
+    }
+
+    
+}
+else{
+    $_SESSION['error']=$response;
+    header("location: ../../?editprofile");
+
+}
+}
  
