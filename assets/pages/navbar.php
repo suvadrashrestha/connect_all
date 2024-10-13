@@ -13,7 +13,6 @@
         src="assets/images/profiles/<?=$user['profile_pic']?>"
         alt="logo"
       />
-
       <div class="dropdown">
         <!-- Dropdown Button (Arrow) -->
         <button class="dropdown-btn" id="dropdownButton">Menu</button>
@@ -28,6 +27,10 @@
   </div>
 </header>
 
+
+
+
+  
 
 
 
@@ -65,4 +68,7 @@
       }
     }
   };
+
+  
+      
 </script>

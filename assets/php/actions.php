@@ -158,7 +158,7 @@ if(isset($_GET['updateprofile'])){
 
  
 
-    $response=validateUpdateForm($_POST,$_FILES['profile_pic']);
+$response=validateUpdateForm($_POST,$_FILES['profile_pic']);
     // print_r($response);
 
 if($response['status']){
@@ -178,3 +178,24 @@ else{
 }
 }
  
+
+
+// For managing add post
+if (isset($_GET['addpost'])) {
+    $response = ['status' => true];
+    if (isset($_FILES['post_img']) && $_FILES['post_img']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $response = validatePostImage($_FILES['post_img']);
+    }
+
+    if ($response["status"]) {
+        if (createPost($_POST, $_FILES['post_img'] ?? null)) {
+            header("location:../../?new_post_added");
+        } else {
+            echo "Something went wrong";
+        }
+    } else {
+        $_SESSION['error'] = $response;
+        header("location:../../");
+        exit; 
+    }
+}

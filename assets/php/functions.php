@@ -132,7 +132,7 @@ function getUser($user_id){
     global $db;
     $query = "SELECT * FROM users WHERE id=$user_id";
     $run= mysqli_query($db,$query);
-    return mysqli_fetch_array($run) ;
+    return mysqli_fetch_assoc($run) ;
 }
 
 
@@ -273,14 +273,80 @@ if($imagedata['name']){
     $image_name= time().basename($imagedata['name']);
     $image_dir="../images/profiles/".$image_name;
     move_uploaded_file($imagedata['tmp_name'],$image_dir);
-    $profile_pic= ", profile_pic='$image_name'";
-    
-  
+    $profile_pic= ", profile_pic='$image_name'"; 
 }
+
 $query = "UPDATE users SET first_name = '$first_name', last_name = '$last_name', username = '$username'  $profile_pic  WHERE id = '".$_SESSION['userdata']['id']."'";
 
 return mysqli_query($db, $query);
 }
+
+
+//for validating add post form 
+
+function validatePostImage($image_data){
+    $response=array();
+    $response['status']=true; 
+   
+    if(!$image_data['name']){
+        $response['msg']="no image is selected";
+        $response['status']=false;
+        $response['field']="post_img";
+    }
+ 
+  
+   if($image_data['name']){
+    $image= basename($image_data['name']);
+    $type= strtolower(pathinfo($image,PATHINFO_EXTENSION));
+    // $size= $image_data['size']/1000;
+    if($type!='jpg' && $type!='jpeg' && $type!='png'){
+        $response['msg']="only jpg,jpeg,png image are allowed";
+        $response['status']=false;
+        $response['field']='post_img';     
+    }
+    // if($size>1000){
+    //     $response['msg']="upload image less than 1 mb";
+    //     $response['status']=false;
+    //     $response['field']='post_img';  
+
+    // }
+
+   }
+    return $response;
+}
+
+
+//for creating new post 
+
+function createPost($text, $image){
+    global $db;
+    $post_text = mysqli_real_escape_string($db,$text['post_text']);
+    $user_id= $_SESSION['userdata']['id'];
+    if($image['name']){
+        echo "$image";
+        $image_name= time().basename($image['name']);
+        $image_dir="../images/posts/".$image_name;
+        move_uploaded_file($image['tmp_name'],$image_dir); 
+    }       
+    $query = "INSERT INTO posts (user_id, post_text, post_img) VALUES ('$user_id','$post_text','$image_name')";
+    return mysqli_query($db,$query);
+}
+
+
+// for getting post 
+
+function getPost() {
+    global $db;
+    $query = "SELECT posts.id, posts.user_id, posts.post_img, posts.post_text, posts.created_at, 
+                     users.first_name, users.last_name, users.username, users.profile_pic 
+              FROM posts 
+              JOIN users ON users.id = posts.user_id 
+              ORDER BY posts.created_at DESC";  // Order by created_at in descending order
+    $run = mysqli_query($db, $query);
+    return mysqli_fetch_all($run, MYSQLI_ASSOC);  // Fetch as associative array
+}
+
+
 ?>
 
 
