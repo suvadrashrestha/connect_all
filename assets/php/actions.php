@@ -182,8 +182,14 @@ else{
 
 // For managing add post
 if (isset($_GET['addpost'])) {
+    // echo "<pre>";
+    // print_r($_FILES);
+    // $image= basename($_FILES['post_img']['name']);
+
+    // $type= strtolower(pathinfo($image,PATHINFO_EXTENSION));
+    // echo "$type";
     $response = ['status' => true];
-    if (isset($_FILES['post_img']) && $_FILES['post_img']['error'] !== UPLOAD_ERR_NO_FILE) {
+    if (isset($_FILES['post_img']) && $_FILES['post_img']['error'] == 0 ) {
         $response = validatePostImage($_FILES['post_img']);
     }
 

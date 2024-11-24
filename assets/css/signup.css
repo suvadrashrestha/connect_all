@@ -45,6 +45,12 @@
   height: 170px;
   width: 170px;
 }
+@media (max-width: 768px) {
+  /* Adjust the max-width value as needed */
+  .logo {
+    display: none; /* This will hide the logo class on small screens */
+  }
+}
 
 /* body {
   position: relative;
@@ -69,7 +75,19 @@
   box-shadow: -3px 3px 10px -5px rgba(0, 0, 0, 0.2);
   padding: 30px 30px;
 }
+@media (max-width: 768px) {
+  /* Adjust the max-width value as needed */
+  .container {
+    width: 90%;
+  }
+}
+@media (max-width: 400px) {
+  /* Adjust the max-width value as needed */
 
+  .form {
+    padding: 15px;
+  }
+}
 .form h2 {
   font-size: 30px;
   font-weight: 700;
@@ -93,12 +111,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   height: 36px;
   width: calc(100% / 3);
   background-color: white;
+}
+@media (max-width: 290px) {
+  /* Adjust the max-width value as needed */
+
+  .gender-radio {
+    gap: 2px;
+  }
 }
 .form form .input .gender-radio input[type="radio"] {
   height: 15px;

@@ -38,122 +38,43 @@ body {
   box-sizing: border-box;
 }
 
-/* Modal styles */
-.modal {
-  display: none; /* Hidden by default */
-  overflow: auto;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background-color: white;
-  width: 60%;
-  max-width: 500px;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.modal-header h3 {
-  margin: 0;
-}
-
-.close {
-  cursor: pointer;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-/* Post content */
-.post-textarea {
-  width: 100%;
-  height: 80px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: none;
-  margin-bottom: 20px;
-  outline: none;
-}
-
-.post-textarea:active,
-.post-textarea:hover {
-  outline: none;
-  border: 1px solid blue;
-}
-
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 15px;
-}
-
-.post-actions .image-upload {
+#dropdown {
   position: relative;
-  cursor: pointer;
   display: inline-block;
 }
 
-.post-actions .image-upload input[type="file"] {
+#dropdownContent {
   display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
-.post-actions .image-upload img {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
+#dropdownContent a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
-.post-image-preview {
-  overflow: auto;
-  display: flex;
-  flex-wrap: wrap; /* Allow items to wrap into the next row */
-  gap: 10px; /* Add spacing between images */
+#dropdownContent a:hover {
+  background-color: #f1f1f1;
 }
 
-.post-image-preview img {
-  flex: 1 1 calc(33.33% - 10px); /* Each image takes up approximately 1/3 of the width minus the gap */
-  max-width: calc(
-    33.33% - 10px
-  ); /* Each image will take 1/3 of the container width */
-  max-height: 100px; /* Optional: Set a max height for images */
-  border-radius: 5px;
-  object-fit: cover;
-}
-
-.post-submit {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
+/* Arrow icon */
+#dropdownButton {
+  background: none;
+  padding: 5px 10px;
+  color: black;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  font-size: 18px;
 }
-#postBtn:disabled {
-  background-color: #80dd95; /* Initial background when disabled */
-  cursor: not-allowed; /* Disable pointer events */
-}
-#postBtn:not(:disabled):hover {
-  color: white; /* Background turns white on hover */
-}
-.post-submit:hover {
-  background-color: #218838;
+
+/* Optionally styling the arrow */
+#dropdownButton:after {
+  content: "\25BC"; /* Down arrow */
+  margin-left: 8px;
 }

@@ -1,19 +1,17 @@
-<?php 
-    global $user;
-    ?>
+<?php
+global $user;
+?>
 <header>
   <div class="header">
     <a href="?">
-      <img class="logo" src="assets/images/logo-color.png" alt="logo"
-    /></a>
+      <img class="logo" src="assets/images/logo-color.png" alt="logo" /></a>
     <input type="text" placeholder="looking for someone.." />
     <div class="user-menu">
       <img
         class="logo"
-        src="assets/images/profiles/<?=$user['profile_pic']?>"
-        alt="logo"
-      />
-      <div class="dropdown">
+        src="assets/images/profiles/<?= $user['profile_pic'] ?>"
+        alt="logo" />
+      <div id="dropdown">
         <!-- Dropdown Button (Arrow) -->
         <button class="dropdown-btn" id="dropdownButton">Menu</button>
 
@@ -28,13 +26,6 @@
 </header>
 
 
-
-
-  
-
-
-
-
 <script>
   function confirmLogout() {
     var confirmation = confirm("Are you sure you want to logout?");
@@ -42,11 +33,11 @@
       window.location.href = "assets/php/actions.php?logout";
     }
   }
-  
+
   // Toggle dropdown visibility on button click
   document
     .getElementById("dropdownButton")
-    .addEventListener("click", function () {
+    .addEventListener("click", function() {
       var dropdown = document.getElementById("dropdownContent");
       // Toggle the display between 'block' and 'none'
       if (dropdown.style.display === "block") {
@@ -57,7 +48,7 @@
     });
 
   // Optional: Close dropdown if clicked outside of it
-  window.onclick = function (event) {
+  window.onclick = function(event) {
     if (!event.target.matches(".dropdown-btn")) {
       var dropdowns = document.getElementsByClassName("dropdown-content");
       for (var i = 0; i < dropdowns.length; i++) {
@@ -68,7 +59,4 @@
       }
     }
   };
-
-  
-      
 </script>
