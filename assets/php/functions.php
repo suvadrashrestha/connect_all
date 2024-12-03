@@ -84,7 +84,6 @@ function showError($field)
 {
     if (isset($_SESSION['error'])) {
         $error = $_SESSION['error'];
-
         if (isset($error['field']) && $field == $error['field']) {
 ?>
             <div class="error-text" style="display:block">
@@ -195,13 +194,12 @@ function checkUser($login_data)
     // echo $password;
     $query = "SELECT * FROM users WHERE ( email ='$username_email' || username='$username_email') && password='$password'";
     $run = mysqli_query($db, $query);
-    $data['user'] = mysqli_fetch_assoc($run);
-    if ($data['user']) {
+    $data = ['status' => false, 'user' => null];
+    // Fetch user if found
+    if ($run && mysqli_num_rows($run) > 0) {
+        $data['user'] = mysqli_fetch_assoc($run);
         $data['status'] = true;
-    } else {
-        $data['status'] = false;
     }
-
     return $data;
 }
 
@@ -314,41 +312,82 @@ function getUsersByPostId($post_id)
 
     return $users; // Return the associative array of users who liked the post
 }
+
+
+function validatePassword($password)
+{
+    // Define the validation criteria
+    $errors = [];
+
+    // Minimum length check (8 characters)
+    if (strlen($password) < 8) {
+        $errors[] = "Password must be at least 8 characters long.";
+    }
+
+    // Check for at least one uppercase letter
+    if (!preg_match('/[A-Z]/', $password)) {
+        $errors[] = "Password must contain at least one uppercase letter.";
+    }
+
+    // Check for at least one lowercase letter
+    if (!preg_match('/[a-z]/', $password)) {
+        $errors[] = "Password must contain at least one lowercase letter.";
+    }
+
+    // Check for at least one number
+    if (!preg_match('/[0-9]/', $password)) {
+        $errors[] = "Password must contain at least one number.";
+    }
+
+    // Check for at least one special character
+    if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+        $errors[] = "Password must contain at least one special character.";
+    }
+
+    return $errors;
+}
+
 // for validating login form 
+
 function validateLoginForm($form_data)
 {
-    $response = array();
-    $response['status'] = true;
-    $blank = false;
-    if (!$form_data["password"]) {
-        $response['msg'] = "password is required";
-        $response['status'] = true;
+    $response = array('status' => true);
+
+    // Check if password is provided
+    if (empty($form_data["password"])) {
+        $response['msg'] = "Password is required";
+        $response['status'] = false;
         $response['field'] = 'password';
-        $blank = true;
+        return $response; // Return early if error
     }
 
-    if (!$form_data["username_email"]) {
-        $response['msg'] = "username/email is required";
-        $response['status'] = true;
+    // Check if username/email is provided
+    if (empty($form_data["username_email"])) {
+        $response['msg'] = "Username/Email is required";
+        $response['status'] = false;
         $response['field'] = 'username_email';
-        $blank = true;
+        return $response; // Return early if error
     }
-    if (!$blank && (!checkUser($form_data)['status'])) {
-        $response['msg'] = "password or email/username is incorrect";
+
+    // Check user credentials
+    $userCheck = checkUser($form_data);
+    if (!$userCheck['status']) {
+        $response['msg'] = "Password or Username/Email is incorrect";
         $response['status'] = false;
         $response['field'] = 'checkuser';
-    } else {
-        $response['user'] = checkUser($form_data)['user'];
+        return $response; // Return early if error
     }
 
-
+    // If everything is valid, set the user data
+    $response['user'] = $userCheck['user'];
     return $response;
 }
 
 
 
 
-//for creating new user 
+
+//for creating new user
 
 function createUser($data)
 {
@@ -361,7 +400,8 @@ function createUser($data)
     $password = mysqli_real_escape_string($db, $data['password']);
     $password = md5($password);
 
-    $query = "INSERT INTO users (first_name,last_name,gender,email,username,password) VALUES ('$first_name','$last_name','$gender','$email','$username','$password')";
+    $query = "INSERT INTO users (first_name,last_name,gender,email,username,password) VALUES
+('$first_name','$last_name','$gender','$email','$username','$password')";
     return mysqli_query($db, $query);
 }
 
@@ -370,7 +410,7 @@ function createUser($data)
 function verifyEmail($email)
 {
     global $db;
-    $query = "UPDATE users SET  ac_status=1 WHERE email='$email'";
+    $query = "UPDATE users SET ac_status=1 WHERE email='$email'";
     return mysqli_query($db, $query);
 }
 
@@ -379,7 +419,7 @@ function resetPassword($email, $password)
 {
     global $db;
     $password = md5($password);
-    $query = "UPDATE users SET  password='$password' WHERE email='$email'";
+    $query = "UPDATE users SET password='$password' WHERE email='$email'";
     return mysqli_query($db, $query);
 }
 
@@ -440,7 +480,7 @@ function validateUpdateForm($form_data, $image_data)
     }
     return $response;
 }
-//function for updating profile 
+//function for updating profile
 
 function updateProfile($data, $imagedata)
 {
@@ -457,13 +497,14 @@ function updateProfile($data, $imagedata)
         $profile_pic = ", profile_pic='$image_name'";
     }
 
-    $query = "UPDATE users SET first_name = '$first_name', last_name = '$last_name', username = '$username'  $profile_pic  WHERE id = '" . $_SESSION['userdata']['id'] . "'";
+    $query = "UPDATE users SET first_name = '$first_name', last_name = '$last_name', username = '$username' $profile_pic
+WHERE id = '" . $_SESSION['userdata']['id'] . "'";
 
     return mysqli_query($db, $query);
 }
 
 
-//for validating add post form 
+//for validating add post form
 
 function validatePostImage($image_data)
 {
@@ -555,18 +596,18 @@ function createPost($text, $image)
 }
 
 
-// for getting post 
+// for getting post
 
 function getPost()
 {
     global $db;
-    $query = "SELECT posts.id, posts.user_id, posts.post_img, posts.post_text, posts.created_at, 
-                     users.first_name, users.last_name, users.username, users.profile_pic 
-              FROM posts 
-              JOIN users ON users.id = posts.user_id 
-              ORDER BY posts.created_at DESC";  // Order by created_at in descending order
+    $query = "SELECT posts.id, posts.user_id, posts.post_img, posts.post_text, posts.created_at,
+users.first_name, users.last_name, users.username, users.profile_pic
+FROM posts
+JOIN users ON users.id = posts.user_id
+ORDER BY posts.created_at DESC"; // Order by created_at in descending order
     $run = mysqli_query($db, $query);
-    return mysqli_fetch_all($run, MYSQLI_ASSOC);  // Fetch as associative array
+    return mysqli_fetch_all($run, MYSQLI_ASSOC); // Fetch as associative array
 }
 
 // for getting posts dynamically ie which we followed
@@ -581,6 +622,46 @@ function filterPosts()
     }
 
     return $filter_list;
+}
+
+// for getting the search result
+function searchUser($param)
+{
+
+    global $db;
+
+    // Sanitize the input to prevent SQL injection
+    $param = mysqli_real_escape_string($db, $param);
+
+    // Prepare the search query
+    $searchTerm = "%" . $param . "%";  // Use wildcards for searching
+    $currentUserId = $_SESSION['userdata']['id']; // Assuming the session contains the user's ID
+
+    // Query the database for users that match the search term
+    $query = "SELECT * FROM users 
+    WHERE (username LIKE '$searchTerm' 
+           OR first_name LIKE '$searchTerm' 
+           OR last_name LIKE '$searchTerm') 
+    AND ac_status IN (0, 1)";
+
+    // Execute the query
+    $result = mysqli_query($db, $query);
+
+    // Initialize an array to store the matching users
+    $users = [];
+
+    // Check if the query was successful
+    if ($result) {
+        // Fetch all matching rows from the result
+        while ($row = mysqli_fetch_assoc($result)) {
+            $users[] = $row;
+        }
+    } else {
+        echo "Error: " . mysqli_error($db);
+    }
+
+    // Return the array of users (empty if no users are found)
+    return $users;
 }
 
 

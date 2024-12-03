@@ -1,16 +1,19 @@
 <?php
 global $user;
+global $search_param;
+
 ?>
-<header>
+<header style="height:60px">
   <div class="header">
     <a href="?">
       <img class="logo" src="assets/images/logo-color.png" alt="logo" /></a>
-    <input type="text" placeholder="looking for someone.." />
+    <!-- <form> -->
+    <form method="GET"> <input value="<?= $search_param ?>" style="width:100%" type="text" id="search" name="search"
+        placeholder="looking for someone.." />
+    </form>
+    <!-- </form> -->
     <div class="user-menu">
-      <img
-        class="logo"
-        src="assets/images/profiles/<?= $user['profile_pic'] ?>"
-        alt="logo" />
+      <img class="logo" src="assets/images/profiles/<?= $user['profile_pic'] ?>" alt="logo" />
       <div id="dropdown">
         <!-- Dropdown Button (Arrow) -->
         <button class="dropdown-btn" id="dropdownButton">Menu</button>
