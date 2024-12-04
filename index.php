@@ -1,8 +1,7 @@
 <?php session_start();
 require_once 'assets/php/functions.php';
-// echo "<pre>";
-// print_r(getPost());
-// print_r($_SESSION);
+require_once 'assets/php/adminFunction.php';
+
 
 if (isset($_GET['newfp'])) {
     unset($_SESSION['auth_temp']);
@@ -10,9 +9,6 @@ if (isset($_GET['newfp'])) {
     unset($_SESSION['forgot_code']);
 }
 if (isset($_SESSION['Auth'])) {
-    // echo $_SESSION['Auth'];
-    // echo "sdcsdc";
-    // print_r($_SESSION);
     $user = getUser($_SESSION['userdata']['id']);
     $posts = filterPosts();
     $follow_suggestions = filterFollowSuggestion();
@@ -24,10 +20,6 @@ $pagecount = count($_GET);
 
 // manage pages 
 if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
-    //   echo "user is logged in";
-    //   $userdata= $_SESSION['userdata'];
-    //   echo "<pre>";
-    //   print_r($userdata);
     showPage('header', ['page_title' => 'connect - home', 'css' => ['navbar', 'feed']]);
     showPage('navbar');
     showPage('feed');
@@ -38,7 +30,7 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'blocked']);
     showPage('blocked');
 } elseif (isset($_SESSION['Auth']) && isset($_GET['editprofile']) && $user['ac_status'] == 1) {
-    showPage('header', ['page_title' => 'connect - edit profile', 'css' => ['feed', 'edit_profile', 'navbar']]);
+    showPage('header', ['page_title' => 'connect - edit profile', 'css' => ['edit_profile', 'navbar']]);
     showPage('navbar');
     showPage('edit_profile');
 } elseif (isset($_SESSION['Auth']) && isset($_GET['search']) && $user['ac_status'] == 1) {
@@ -73,24 +65,30 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         // print_r($profile);
         // print_r($profile_post);
     }
-} elseif (isset($_GET['signup'])) {
+} elseif (isset($_GET['signup']) && !($_SESSION['Auth'])) {
     showPage('header', ['page_title' => 'connect - signup', 'css' => 'signup',]);
     showPage('signup');
-} elseif (isset($_GET['login'])) {
+} elseif (isset($_GET['login']) && !($_SESSION['Auth'])) {
     showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
     showPage('login');
 } elseif (isset($_GET['forgotpassword'])) {
     showPage('header', ['page_title' => 'connect - forgot password', 'css' => 'signup']);
     showPage('forgot_password');
-} else {
-    if (isset($_SESSION['Auth'])) {
-        showPage('header', ['page_title' => 'connect - home', 'css' => ['feed', 'navbar']]);
-        showPage('navbar');
-        showPage('feed');
-    } else {
-        showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
-        showPage('login');
+} elseif (isset($_SESSION['Auth']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
+    if (isset($_GET['adminDashboard'])) {
+        showPage('header', ['page_title' => 'connect - home', 'css' => ['navbar', 'admindashboard']]);
+        showPage('admin/dashboard');
     }
+} else {
+    echo "error";
+    // if (isset($_SESSION['Auth'])) {
+    //     showPage('header', ['page_title' => 'connect - home', 'css' => ['feed', 'navbar']]);
+    //     showPage('navbar');
+    //     showPage('feed');
+    // } else {
+    //     showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
+    //     showPage('login');
+    // }
 }
 showPage('footer');
 unset($_SESSION['error']);

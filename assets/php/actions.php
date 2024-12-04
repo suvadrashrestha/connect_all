@@ -32,7 +32,10 @@ if (isset($_GET['login'])) {
     if ($response['status']) {
         $_SESSION['Auth'] = true;
         $_SESSION['userdata'] = $response['user'];
-        if ($response['user']['ac_status'] == 0) {
+        if ($response['user']['is_admin'] == 1) {
+            $_SESSION['is_admin'] = true;
+        }
+        if ($response['user']['ac_status'] == 0 && $response['user']['is_admin'] == 0) {
             $_SESSION['code'] = $code = rand(111111, 999999);
             sendCode($response['user']['email'], 'Verify your email', $code);
         }
@@ -171,7 +174,7 @@ if (isset($_GET['addpost'])) {
 
     if ($response["status"]) {
         if (createPost($_POST, $_FILES['post_img'] ?? null)) {
-            header("location:../../?new_post_added");
+            header("location:../../");
         } else {
             echo "Something went wrong";
         }

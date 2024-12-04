@@ -106,15 +106,3 @@ $comments = getComments($post['id']);
 
 
 </div>
-
-
-
-<script>
-  document.querySelectorAll('.post_comment').forEach(button => {
-    button.addEventListener('click', async function() {
-
-
-
-    })
-  })
-</script>
