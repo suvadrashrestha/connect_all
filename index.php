@@ -80,15 +80,15 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         showPage('admin/dashboard');
     }
 } else {
-    echo "error";
-    // if (isset($_SESSION['Auth'])) {
-    //     showPage('header', ['page_title' => 'connect - home', 'css' => ['feed', 'navbar']]);
-    //     showPage('navbar');
-    //     showPage('feed');
-    // } else {
-    //     showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
-    //     showPage('login');
-    // }
+
+    if (isset($_SESSION['Auth'])) {
+        showPage('header', ['page_title' => 'connect - home', 'css' => ['feed', 'navbar']]);
+        showPage('navbar');
+        showPage('feed');
+    } else {
+        showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
+        showPage('login');
+    }
 }
 showPage('footer');
 unset($_SESSION['error']);
