@@ -8,8 +8,8 @@ global $search_param;
         <a href="?">
             <img class="logo" src="assets/images/logo-color.png" alt="logo" /></a>
         <!-- <form> -->
-        <form method="GET"> <input value="<?= $search_param ?>" style="width:100%" type="text" id="search" name="search"
-                placeholder="looking for someone.." />
+        <form id=searchForm method="GET"> <input value="<?= $search_param ?>" style="width:100%" type="text" id="search"
+                name="search" placeholder="looking for someone.." />
         </form>
         <!-- </form> -->
         <div class="user-menu">
@@ -23,12 +23,12 @@ global $search_param;
                     <a href="?editprofile">Edit Profile</a>
                     <a style="cursor:pointer" onclick="confirmLogout()">Logout</a>
                     <?php
-          if (isset($_SESSION['is_admin']) && $_SESSION['admin'] = true) {
-          ?>
-                    <a href="?adminDashboard">Admin</a>
+                    if (isset($_SESSION['is_admin']) && $_SESSION['admin'] = true) {
+                    ?>
+                        <a href="?adminDashboard">Admin</a>
                     <?php
-          }
-          ?>
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -37,36 +37,48 @@ global $search_param;
 
 
 <script>
-function confirmLogout() {
-    var confirmation = confirm("Are you sure you want to logout?");
-    if (confirmation) {
-        window.location.href = "assets/php/actions.php?logout";
-    }
-}
+    // Listen for input changes in the search field
+    document.getElementById('searchForm').onsubmit = function(event) {
+        var searchInput = document.getElementById('search').value.trim();
 
-// Toggle dropdown visibility on button click
-document
-    .getElementById("dropdownButton")
-    .addEventListener("click", function() {
-        var dropdown = document.getElementById("dropdownContent");
-        // Toggle the display between 'block' and 'none'
-        if (dropdown.style.display === "block") {
-            dropdown.style.display = "none";
-        } else {
-            dropdown.style.display = "block";
+        // If the search field is empty, prevent the form submission
+        if (searchInput === "") {
+            event.preventDefault();
+            // Optionally, clear any existing search parameters from the URL
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
-    });
+    };
 
-// Optional: Close dropdown if clicked outside of it
-window.onclick = function(event) {
-    if (!event.target.matches(".dropdown-btn")) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        for (var i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.style.display === "block") {
-                openDropdown.style.display = "none";
+    function confirmLogout() {
+        var confirmation = confirm("Are you sure you want to logout?");
+        if (confirmation) {
+            window.location.href = "assets/php/actions.php?logout";
+        }
+    }
+
+    // Toggle dropdown visibility on button click
+    document
+        .getElementById("dropdownButton")
+        .addEventListener("click", function() {
+            var dropdown = document.getElementById("dropdownContent");
+            // Toggle the display between 'block' and 'none'
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        });
+
+    // Optional: Close dropdown if clicked outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches(".dropdown-btn")) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.style.display === "block") {
+                    openDropdown.style.display = "none";
+                }
             }
         }
-    }
-};
+    };
 </script>

@@ -24,7 +24,7 @@ $currentPage = "dashboard";
             </div>
             <div class="card">
                 <h3>Posts</h3>
-                <p><?php echo getPostCount(); ?></p>
+                <p><?php echo count(getPostCount()); ?></p>
 
             </div>
             <div class="card">

@@ -17,17 +17,13 @@
                    class="menu-item <?php if ($currentPage == 'dashboard') echo 'active'; ?>">Dashboard</a>
            </li>
            <li>
-               <a href="admin.php" class="menu-item <?php if ($currentPage == 'admin') echo 'active'; ?>">Admin</a>
+               <a href="?adminList" class="menu-item <?php if ($currentPage == 'admin') echo 'active'; ?>">Admin</a>
            </li>
            <li>
                <a href="?usersList" class="menu-item <?php if ($currentPage == 'users') echo 'active'; ?>">Users</a>
            </li>
            <li>
-               <a href="posts.php" class="menu-item <?php if ($currentPage == 'posts') echo 'active'; ?>">Posts</a>
-           </li>
-           <li>
-               <a href="comments.php"
-                   class="menu-item <?php if ($currentPage == 'comments') echo 'active'; ?>">Comments</a>
+               <a href="?postList" class="menu-item <?php if ($currentPage == 'posts') echo 'active'; ?>">Posts</a>
            </li>
        </ul>
    </aside>

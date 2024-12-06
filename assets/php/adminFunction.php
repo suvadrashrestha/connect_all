@@ -6,7 +6,7 @@ function getNonAdminUsers()
     global $db;
 
     // SQL query to fetch all non-admin users
-    $sql = "SELECT * FROM users WHERE is_admin = 0";
+    $sql = "SELECT * FROM users ";
 
     // Execute the query
     $result = $db->query($sql);
@@ -54,7 +54,7 @@ function getPostCount()
     global $db;
 
     // SQL query to count the number of posts
-    $sql = "SELECT COUNT(*) AS post_count FROM posts";
+    $sql = "SELECT * FROM posts";
 
     // Execute the query
     $result = $db->query($sql);
@@ -63,7 +63,7 @@ function getPostCount()
     if ($result->num_rows > 0) {
         // Fetch the result
         $row = $result->fetch_assoc();
-        return $row['post_count'];  // Return the count of posts
+        return $row;  // Return the count of posts
     } else {
         return 0;  // Return 0 if no posts are found
     }
