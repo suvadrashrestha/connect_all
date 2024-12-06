@@ -76,8 +76,16 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     showPage('forgot_password');
 } elseif (isset($_SESSION['Auth']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
     if (isset($_GET['adminDashboard'])) {
-        showPage('header', ['page_title' => 'connect - home', 'css' => ['navbar', 'admindashboard']]);
+        $currentPage = 'dashboard';
+        showPage('header', ['page_title' => 'connect - admin dashboard', 'css' => ['navbar', 'admindashboard']]);
+        showPage('admin/navbar');
         showPage('admin/dashboard');
+    }
+    if (isset($_GET['usersList'])) {
+        $currentPage = 'users';
+        showPage('header', ['page_title' => 'connect - user list ', 'css' => ['navbar', 'admindashboard']]);
+        showPage('admin/navbar');
+        showPage('admin/usersList');
     }
 } else {
     if (isset($_SESSION['Auth'])) {
