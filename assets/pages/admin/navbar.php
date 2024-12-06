@@ -2,15 +2,11 @@
 global $user;
 global $search_param;
 
+
 ?>
 <header style="height:60px">
-    <div class="header">
-        <a href="?">
-            <img class="logo" src="assets/images/logo-color.png" alt="logo" /></a>
+    <div class="header" style="justify-content:flex-end">
         <!-- <form> -->
-        <form id=searchForm method="GET"> <input value="<?= $search_param ?>" style="width:100%" type="text" id="search"
-                name="search" placeholder="looking for someone.." />
-        </form>
         <!-- </form> -->
         <div class="user-menu">
             <img class="logo" src="assets/images/profiles/<?= $user['profile_pic'] ?>" alt="logo" />
@@ -20,15 +16,8 @@ global $search_param;
 
                 <!-- Dropdown Content -->
                 <div class="dropdown-content" id="dropdownContent">
-                    <a href="?editprofile">Edit Profile</a>
                     <a style="cursor:pointer" onclick="confirmLogout()">Logout</a>
-                    <?php
-                    if (isset($_SESSION['is_admin']) && $_SESSION['admin'] = true) {
-                    ?>
-                        <a href="?adminDashboard">Admin</a>
-                    <?php
-                    }
-                    ?>
+                    <a href="?">User</a>
                 </div>
             </div>
         </div>
@@ -37,18 +26,6 @@ global $search_param;
 
 
 <script>
-    // Listen for input changes in the search field
-    document.getElementById('searchForm').onsubmit = function(event) {
-        var searchInput = document.getElementById('search').value.trim();
-
-        // If the search field is empty, prevent the form submission
-        if (searchInput === "") {
-            event.preventDefault();
-            // Optionally, clear any existing search parameters from the URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    };
-
     function confirmLogout() {
         var confirmation = confirm("Are you sure you want to logout?");
         if (confirmation) {
