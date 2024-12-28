@@ -21,10 +21,7 @@ foreach ($users as $key => $user) {
     ?>
     <!-- Main Content -->
     <main class="content">
-        <form method="GET" action="?DARasearch"> <input
-                style="width:50%;height:40px;margin-bottom:10px;padding:10px;border-radius:20px; border:1px solid blue"
-                value="" style="width:100%" type="text" placeholder="search" />
-        </form>
+       
 
         <!-- Second Row: Table -->
         <div class="user-table">

@@ -19,3 +19,15 @@ if (isset($_GET['blockUnblockUser'])  && !empty($_GET['user_id'])) {
         header("location:../../?usersList");
     }
 }
+if (isset($_GET['deletePost'])  && !empty($_GET['post_id'])) {
+    $remove = deletePost($_GET['post_id']);
+    if ($remove) {
+        header("location:../../?postList");
+    }
+}
+if (isset($_GET['deleteComment'])  && !empty($_GET['comment_id'])) {
+    $remove = deleteComment($_GET['comment_id']);
+    if ($remove) {
+        header("location:../../?postList");
+    }
+}

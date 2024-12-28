@@ -97,17 +97,20 @@ function getCommentCount()
     }
 }
 
-function RemoveAdmin($user_id){
-global $db;
-$query = "UPDATE users SET is_admin = 0 WHERE id = $user_id";
-return mysqli_query($db, $query)?true:false;
+function RemoveAdmin($user_id)
+{
+    global $db;
+    $query = "UPDATE users SET is_admin = 0 WHERE id = $user_id";
+    return mysqli_query($db, $query) ? true : false;
 }
-function AddAdmin($user_id){
+function AddAdmin($user_id)
+{
     global $db;
     $query = "UPDATE users SET is_admin = 1 WHERE id = $user_id";
-    return mysqli_query($db, $query)?true:false;
-    }
-function BlockUnblockUser($user_id) {
+    return mysqli_query($db, $query) ? true : false;
+}
+function BlockUnblockUser($user_id)
+{
     global $db;
     $query = "SELECT ac_status, original_status FROM users WHERE id = $user_id";
     $result = mysqli_query($db, $query);
@@ -128,15 +131,30 @@ function BlockUnblockUser($user_id) {
     return false;
 }
 
-function getAdminEditUserById($user_id) {
-    global $db; 
+function getAdminEditUserById($user_id)
+{
+    global $db;
     $query = "SELECT * FROM users WHERE id = $user_id";
     $result = mysqli_query($db, $query);
     if ($result && mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
-        
+
         return $user;
     } else {
         return false;
     }
+}
+
+function deletePost($post_id)
+{
+    global $db;
+    $query = "DELETE FROM posts WHERE id = $post_id";
+    return mysqli_query($db, $query) ? true : false;
+}
+
+function deleteComment($comment_id)
+{
+    global $db;
+    $query = "DELETE FROM comments WHERE id = $comment_id";
+    return mysqli_query($db, $query) ? true : false;
 }

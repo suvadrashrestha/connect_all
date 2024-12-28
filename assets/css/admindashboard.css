@@ -16,6 +16,8 @@ body {
   border-radius: 5px;
   background-color: rgb(176 176 229);
   cursor: pointer;
+  height: fit-content;
+    min-width: 60px;
 }
 .edit:hover,
 .delete:hover,

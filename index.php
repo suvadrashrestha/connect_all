@@ -95,7 +95,7 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     }
     if (isset($_GET['postList'])) {
         $currentPage = 'posts';
-        showPage('header', ['page_title' => 'connect - posts list ', 'css' => ['navbar', 'admindashboard']]);
+        showPage('header', ['page_title' => 'connect - posts list ', 'css' => ['navbar', 'admindashboard','feed']]);
         showPage('admin/navbar');
         showPage('admin/postList');
     }

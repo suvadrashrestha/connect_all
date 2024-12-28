@@ -41,11 +41,7 @@ foreach ($users as $key => $user) {
     ?>
     <!-- Main Content -->
     <main class="content">
-        <form method="GET" id="adminSearchForm">
-            <input name="listing"
-                style="width:50%;height:40px;margin-bottom:10px;padding:10px;border-radius:20px; border:1px solid blue"
-                type="text" placeholder="search by username" />
-        </form>
+   
 
         <!-- Second Row: Table -->
         <div class="user-table">
