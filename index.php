@@ -2,7 +2,7 @@
 require_once 'assets/php/functions.php';
 require_once 'assets/php/adminFunction.php';
 
-
+// echo "test";
 if (isset($_GET['newfp'])) {
     unset($_SESSION['auth_temp']);
     unset($_SESSION['forgot_email']);
