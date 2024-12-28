@@ -18,7 +18,7 @@ if (isset($_SESSION['unique_id'])) {
     <p class="tagline">Building connections for a better tomorrow.</p>
     <form method="POST" id="loginForm" action="assets/php/actions.php?login">
         <div class="inputBox">
-            <input type="text" style="margin: 10px 0px;" name="username_email" id="username_email"
+            <input type="text" name="username_email" id="username_email"
                 value="<?= showFormData('username_email') ?>" required>
             <label for="username">Username/Email</label>
             <?= showError('username_email') ?>

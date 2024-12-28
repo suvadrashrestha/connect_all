@@ -86,7 +86,7 @@ function showError($field)
         $error = $_SESSION['error'];
         if (isset($error['field']) && $field == $error['field']) {
 ?>
-            <div class="error-text" style="display:block">
+            <div style="color: #ff4f4f;display: block;font-size: 15px;">
                 <?= $error['msg'] ?>
             </div>
 <?php

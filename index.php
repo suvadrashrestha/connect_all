@@ -23,8 +23,8 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     showPage('header', ['page_title' => 'connect - home', 'css' => ['navbar', 'feed']]);
     showPage('navbar');
     showPage('feed');
-} elseif (isset($_SESSION['Auth']) && ($user['ac_status'] == 0) && !$pagecount) {
-    showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'verify']);
+} elseif ((isset($_SESSION['Auth']) && ($user['ac_status'] == 0) && !$pagecount) || (isset($_SESSION['Auth']) && ($user['ac_status']=='0') && isset($_GET['resended']))) {
+    showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'login']);
     showPage('verify_email');
 } elseif (isset($_SESSION['Auth']) && ($user['ac_status'] == 2) && !$pagecount) {
     showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'blocked']);
@@ -72,7 +72,7 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
     showPage('login');
 } elseif (isset($_GET['forgotpassword'])) {
-    showPage('header', ['page_title' => 'connect - forgot password', 'css' => 'register']);
+    showPage('header', ['page_title' => 'connect - forgot password', 'css' => 'login']);
     showPage('forgot_password');
 } elseif (isset($_SESSION['Auth']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
     if (isset($_GET['adminDashboard'])) {
@@ -108,10 +108,10 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         showPage('admin/editUser');
     }
 } else {
-    if (isset($_SESSION['Auth'])) {
+    if (isset($_SESSION['Auth'])  ) {
         showPage('header', ['page_title' => 'connect - home', 'css' => ['feed', 'navbar']]);
-        showPage('navbar');
-        showPage('feed');
+       
+        
     } else {
         showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
         showPage('login');
