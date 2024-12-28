@@ -65,14 +65,14 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         // print_r($profile);
         // print_r($profile_post);
     }
-} elseif (isset($_GET['signup']) && !($_SESSION['Auth'])) {
-    showPage('header', ['page_title' => 'connect - signup', 'css' => 'signup',]);
+} elseif (isset($_GET['signup']) && !(isset($_SESSION['Auth']))) {
+    showPage('header', ['page_title' => 'connect - signup', 'css' => 'register',]);
     showPage('signup');
-} elseif (isset($_GET['login']) && !($_SESSION['Auth'])) {
-    showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
+} elseif (isset($_GET['login']) && !(isset($_SESSION['Auth']))) {
+    showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
     showPage('login');
 } elseif (isset($_GET['forgotpassword'])) {
-    showPage('header', ['page_title' => 'connect - forgot password', 'css' => 'signup']);
+    showPage('header', ['page_title' => 'connect - forgot password', 'css' => 'register']);
     showPage('forgot_password');
 } elseif (isset($_SESSION['Auth']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
     if (isset($_GET['adminDashboard'])) {
@@ -113,7 +113,7 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         showPage('navbar');
         showPage('feed');
     } else {
-        showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
+        showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
         showPage('login');
     }
 }
