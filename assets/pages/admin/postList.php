@@ -1,18 +1,6 @@
-<?php $users = getAdminUsers();
-
-foreach ($users as $key => $user) {
-    switch ($user['gender']) {
-        case 0:
-            $users[$key]['gender'] = 'Female';
-            break;
-        case 1:
-            $users[$key]['gender'] = 'Male';
-            break;
-        case 2:
-            $users[$key]['gender'] = 'Other';
-            break;
-    }
-}
+<?php $posts = getPosts();
+echo "<pre>";
+print_r($posts)
 ?>
 <div class="container">
 

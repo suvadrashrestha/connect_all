@@ -99,6 +99,14 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         showPage('admin/navbar');
         showPage('admin/postList');
     }
+    if (isset($_GET['editSingleUser'])  && !empty($_GET['id'])) {
+        $currentPage = 'users';
+        $user_id = $_GET['id'];
+        $users=getAdminEditUserById($user_id);
+        showPage('header', ['page_title' => 'connect - posts list ', 'css' => ['navbar', 'admindashboard']]);
+        showPage('admin/navbar');
+        showPage('admin/editUser');
+    }
 } else {
     if (isset($_SESSION['Auth'])) {
         showPage('header', ['page_title' => 'connect - home', 'css' => ['feed', 'navbar']]);

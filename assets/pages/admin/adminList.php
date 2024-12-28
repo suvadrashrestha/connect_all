@@ -3,13 +3,13 @@
 foreach ($users as $key => $user) {
     switch ($user['gender']) {
         case 0:
-            $users[$key]['gender'] = 'Female';
+            $users[$key]['gender'] = 'Other';
             break;
         case 1:
             $users[$key]['gender'] = 'Male';
             break;
         case 2:
-            $users[$key]['gender'] = 'Other';
+            $users[$key]['gender'] = 'Female';
             break;
     }
 }
@@ -32,6 +32,7 @@ foreach ($users as $key => $user) {
             <table>
                 <thead>
                     <tr>
+                        <th> S/N</th>
                         <th>Name</th>
                         <th>Username</th>
                         <th>Email</th>
@@ -41,8 +42,10 @@ foreach ($users as $key => $user) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($users as $user): ?>
+                    <?php foreach ($users as $key => $user): ?>
                         <tr>
+                            <td><?= htmlspecialchars($key + 1) ?></td>
+
                             <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></td>
                             <td><?= htmlspecialchars($user['username']) ?></td>
 
@@ -50,7 +53,10 @@ foreach ($users as $key => $user) {
                             <td><?= htmlspecialchars($user['gender']) ?></td>
                             <td><img height="20px" width="20px" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
                             </td>
-                            <td> <button> Edit </button> <button>Delete</button></td>
+                            <td>
+                                <a class="delete" username="<?= htmlspecialchars($user['username']) ?>"
+                                    user_id="<?= htmlspecialchars($user['id']) ?>">Remove</a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -58,3 +64,24 @@ foreach ($users as $key => $user) {
         </div>
     </main>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const deleteButtons = document.getElementsByClassName("delete");
+
+        Array.from(deleteButtons).forEach(button => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                const userId = button.getAttribute("user_id");
+                const username = button.getAttribute("username");
+                const confirmation = confirm(
+                    ` Are you sure you want to remove ${username} as admin ? `);
+
+                if (confirmation) {
+                    // Redirect to another page with user ID as a query parameter
+                    window.location.href =
+                        `assets/php/adminActions.php?user_id=${userId}&removeAdmin`;
+                }
+            });
+        });
+    });
+</script>
