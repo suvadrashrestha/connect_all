@@ -59,7 +59,7 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         $profile['followers'] = getFollowers($profile["id"]);
         $profile['following'] = getFollowing($profile["id"]);
 
-        showPage('header', ['page_title' => $profile['first_name'] . ' ' . $profile['last_name'], 'css' => ['navbar']]);
+        showPage('header', ['page_title' => $profile['first_name'] . ' ' . $profile['last_name'], 'css' => ['navbar','profile']]);
         showPage('navbar');
         showPage('profile');
         // print_r($profile);

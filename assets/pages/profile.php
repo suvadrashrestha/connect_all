@@ -6,364 +6,338 @@ global $profile_post;
 global $user;
 
 ?>
-   
-    <div class="container col-9 rounded-0">
-      <div class="col-12 rounded p-4 mt-4 d-flex gap-5">
-        <div class="col-4 d-flex justify-content-end align-items-start">
-          <img
-            src="assets/images/profiles/<?=$profile['profile_pic']?>"
-            class="img-thumbnail rounded-circle my-3"
-            style="height: 170px"
-            alt="..."
-          />
-        </div>
-        <div class="col-8">
-          <div class="d-flex flex-column">
-            <div class="d-flex gap-5 align-items-center">
-              <span style="font-size: xx-large"><?=$profile['first_name']?> <?=$profile['last_name']?></span>
-              <div class="dropdown">
-                <span
-                  class=""
-                  style="font-size: xx-large"
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  ><i class="bi bi-three-dots"></i>
-                </span>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      ><i class="bi bi-chat-fill"></i> Message</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      ><i class="bi bi-x-circle-fill"></i> Block</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <span style="font-size: larger" class="text-secondary"
-              ><?=$profile['username']?></span
-            >
-            <div class="d-flex gap-2 align-items-center my-3">
-              <a class="btn btn-sm btn-primary"
-                ><i class="bi bi-file-post-fill"></i> <?=count($profile_post)?>Posts</a
-              >
-              <a class="btn btn-sm btn-primary"
-                ><i class="bi bi-people-fill"></i> <?=count($profile['followers'])?> Followers</a
-              >
-              <a class="btn btn-sm btn-primary"
-                ><i class="bi bi-person-fill"></i> <?=count($profile['following'])?> Following</a
-              >
-            </div>
-
-<?php
-
-if(!($user['id']==$profile['id'])){
-?>
-   <div class="d-flex gap-2 align-items-center my-1">
-    <?php
-     if (checkFollowStatus($profile['id'])){
-      ?>
-      <button class="btn btn-sm btn-danger unfollowbtn" data-user-id='<?=$profile['id']?>'>Unfollow</button>
-      <?php     
-     }
-     else{
-      ?>
-      <button class="btn btn-sm btn-primary followbtn" data-user-id='<?=$profile['id']?>'>Follow</button>
-      <?php
-     }
-    ?>
-            </div>
-          <?php
+      
  
-  ?>
-<?php
-}
-?>
+      
+      
+     
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f4f4;
+        }
 
-         
-          </div>
+        /* Profile Header Section */
+        .profile-header {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .profile-info img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .profile-details h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        .profile-details p {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 15px 0;
+            gap: 20px;
+        }
+        .stats div {
+            text-align: center;
+        }
+        .stats h3 {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+        .stats p {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .buttons button {
+            background-color: #c0a6e8;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+        .buttons button:hover {
+            background-color: #a27cd9;
+        }
+
+        /* Content Section */
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .left-section,
+        .right-section {
+            display: none; /* Hide left and right sections in mobile view */
+        }
+
+        .main-section {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Prevent overflow of child elements */
+            box-sizing: border-box;
+        }
+
+        /* Post Styling */
+        .card.post {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; /* Ensure spacing between posts */
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .post-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        .post-header h4 {
+            font-size: 1rem;
+            margin: 0;
+        }
+        .post-header small {
+            color: #555;
+            font-size: 0.8rem;
+        }
+        .post-reactions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .reaction-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .reaction-buttons button {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .reaction-buttons button:hover {
+            background: #f0f0f0;
+        }
+
+        /* Following Section */
+        .left-section.card.following-list {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .following-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .following-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Add spacing between image and name */
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .following-list img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Photos Section */
+        .right-section.card.photos-list {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .photos-list img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media screen and (min-width: 768px) {
+            .container {
+                flex-direction: row;
+                gap: 20px;
+            }
+            .left-section,
+            .right-section {
+                display: block; /* Show left and right sections in desktop view */
+            }
+            .left-section {
+                flex: 1;
+            }
+            .main-section {
+                flex: 2;
+            }
+            .right-section {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-info">
+            <img src="https://picsum.photos/80" alt="Profile Picture">
+            <div class="profile-details">
+                <h2>Pawan Dangi</h2>
+                <p>@Pawan</p>
+            </div>
         </div>
-      </div>
-      <h3 class="border-bottom">Posts</h3>
-      <?php
-      if(count($profile_post)<1){
-        echo "<p style='padding: 20px'> No posts </p>";
-     }
-      ?>
-      <div class="gallery d-flex flex-wrap justify-content-center gap-2 mb-4">
-        <?php 
-           foreach($profile_post as $post){
-            if($post['post_img']){
-            ?>
-            
-            <img src="assets/images/posts/<?=$post['post_img']?>" width="300px" class="rounded" />
-            <?php
-            }
-            else{
-              ?>
-              <span> <?=$post['post_text']?> </span>
-                <?php
-            }
-           }
-        ?> 
-      </div>
+        <div class="stats">
+            <div>
+                <h3>88</h3>
+                <p>Posts</p>
+            </div>
+            <div>
+                <h3>88</h3>
+                <p>Following</p>
+            </div>
+            <div>
+                <h3>88</h3>
+                <p>Followers</p>
+            </div>
+        </div>
+        <div class="buttons">
+            <button>Follow</button>
+            <button>Edit</button>
+        </div>
     </div>
 
-    <!-- Button trigger modal -->
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
-    >
-      Launch demo modal
-    </button>
-
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-body d-flex p-0">
-            <div class="col-8">
-              <img src="img/post2.jpg" class="w-100 rounded-start" />
-            </div>
-
-            <div class="col-4 d-flex flex-column">
-              <div class="d-flex align-items-center p-2 border-bottom">
-                <div>
-                  <img
-                    src="./img/profile.jpg"
-                    alt=""
-                    height="50"
-                    class="rounded-circle border"
-                  />
-                </div>
-                <div>&nbsp;&nbsp;&nbsp;</div>
-                <div
-                  class="d-flex flex-column justify-content-start align-items-center"
-                >
-                  <h6 style="margin: 0px">Monu Giri</h6>
-                  <p style="margin: 0px" class="text-muted">@oyeitsmg</p>
-                </div>
-              </div>
-              <div
-                class="flex-fill align-self-stretch overflow-auto"
-                style="height: 100px"
-              >
-                <div class="d-flex align-items-center p-2">
-                  <div>
-                    <img
-                      src="./img/profile2.jpg"
-                      alt=""
-                      height="40"
-                      class="rounded-circle border"
-                    />
-                  </div>
-                  <div>&nbsp;&nbsp;&nbsp;</div>
-                  <div
-                    class="d-flex flex-column justify-content-start align-items-start"
-                  >
-                    <h6 style="margin: 0px">@osilva</h6>
-                    <p style="margin: 0px" class="text-muted">
-                      its nice pic very good
-                    </p>
-                  </div>
-                </div>
-
-                <div class="d-flex align-items-center p-2">
-                  <div>
-                    <img
-                      src="./img/profile2.jpg"
-                      alt=""
-                      height="40"
-                      class="rounded-circle border"
-                    />
-                  </div>
-                  <div>&nbsp;&nbsp;&nbsp;</div>
-                  <div
-                    class="d-flex flex-column justify-content-start align-items-start"
-                  >
-                    <h6 style="margin: 0px">@osilva</h6>
-                    <p style="margin: 0px" class="text-muted">
-                      its nice pic very good
-                    </p>
-                  </div>
-                </div>
-
-                <div class="d-flex align-items-center p-2">
-                  <div>
-                    <img
-                      src="./img/profile2.jpg"
-                      alt=""
-                      height="40"
-                      class="rounded-circle border"
-                    />
-                  </div>
-                  <div>&nbsp;&nbsp;&nbsp;</div>
-                  <div
-                    class="d-flex flex-column justify-content-start align-items-start"
-                  >
-                    <h6 style="margin: 0px">@osilva</h6>
-                    <p style="margin: 0px" class="text-muted">
-                      its nice pic very good
-                    </p>
-                  </div>
-                </div>
-
-                <div class="d-flex align-items-center p-2">
-                  <div>
-                    <img
-                      src="./img/profile2.jpg"
-                      alt=""
-                      height="40"
-                      class="rounded-circle border"
-                    />
-                  </div>
-                  <div>&nbsp;&nbsp;&nbsp;</div>
-                  <div
-                    class="d-flex flex-column justify-content-start align-items-start"
-                  >
-                    <h6 style="margin: 0px">@osilva</h6>
-                    <p style="margin: 0px" class="text-muted">
-                      its nice pic very good
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="input-group p-2 border-top">
-                <input
-                  type="text"
-                  class="form-control rounded-0 border-0"
-                  placeholder="say something.."
-                  aria-label="Recipient's username"
-                  aria-describedby="button-addon2"
-                />
-                <button
-                  class="btn btn-outline-primary rounded-0 border-0"
-                  type="button"
-                  id="button-addon2"
-                >
-                  Post
-                </button>
-              </div>
-            </div>
-          </div>
+    <!-- Content Section -->
+    <div class="container">
+        <!-- Following Section -->
+        <div class="left-section card following-list">
+            <h3>Following</h3>
+            <ul>
+                <li>
+                    <img src="https://via.placeholder.com/40" alt="Jane Smith">
+                    Jane Smith
+                </li>
+                <li>
+                    <img src="https://via.placeholder.com/40" alt="Michael Johnson">
+                    Michael Johnson
+                </li>
+                <li>
+                    <img src="https://via.placeholder.com/40" alt="Chris Evans">
+                    Chris Evans
+                </li>
+                <li>
+                    <img src="https://via.placeholder.com/40" alt="Emily Davis">
+                    Emily Davis
+                </li>
+            </ul>
         </div>
-      </div>
+
+        <!-- Main Section -->
+        <div class="main-section">
+            <!-- Posts -->
+            <div class="card post">
+                <div class="post-header">
+                    <img src="https://via.placeholder.com/50" alt="User Image">
+                    <div>
+                        <h4>Pawan Dangi</h4>
+                        <small>Posted 1 hour ago</small>
+                    </div>
+                </div>
+                <p>Hello, it's me Binda. I am new to it.</p>
+                <div class="post-reactions">
+                    <span>❤️ 1 like</span>
+                    <span>1 comment</span>
+                </div>
+                <div class="reaction-buttons">
+                    <button>❤️ Love</button>
+                    <button>💬 Comment</button>
+                </div>
+            </div>
+            <div class="card post">
+                <div class="post-header">
+                    <img src="https://via.placeholder.com/50" alt="User Image">
+                    <div>
+                        <h4>Pawan Dangi</h4>
+                        <small>Posted 3 hours ago</small>
+                    </div>
+                </div>
+                <p>Excited to be part of this community!</p>
+                <div class="post-reactions">
+                    <span>❤️ 5 likes</span>
+                    <span>3 comments</span>
+                </div>
+                <div class="reaction-buttons">
+                    <button>❤️ Love</button>
+                    <button>💬 Comment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photos Section -->
+        <div class="right-section card photos-list">
+            <h3>Photos</h3>
+            <img src="https://picsum.photos/200" alt="Photo 1">
+            <img src="https://picsum.photos/201" alt="Photo 2">
+            <img src="https://picsum.photos/202" alt="Photo 3">
+        </div>
     </div>
-  
-    <script>
+</body>
 
-// for unfolloeing the user 
-document.querySelectorAll('.unfollowbtn').forEach(function(button) {
-    button.addEventListener('click', function() {
-        var user_id_v = this.getAttribute('data-user-id');
-
-        // Prepare the URL and data
-        const url = 'assets/php/ajax.php?unfollow';
-        
-        var button= this;
-        button.setAttribute('disabled', true); // Disable the button
-        const data = new URLSearchParams();
-        data.append('user_id', user_id_v);
-        console.log(data)
-        // Use the fetch API to make the request
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: data
-        })
-        .then(response => {
-          // console.log(response.text());
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text(); // Parse the JSON from the response
-        })
-        .then(responseData => {
-          const cleanedData = responseData.trim();
-          const jsonData = JSON.parse(cleanedData);
-          console.log(jsonData); 
-            if (jsonData.status) {
-              button.setAttribute('data-user-id', 0); // Set the data-user-id attribute
-              button.textContent = 'Unfollowed'; // Change the button text
-              button.style.backgroundColor="gray";
-            } else {
-                // Handle failure response
-                button.setAttribute('disabled', false); // Disable the button
-
-                console.log("Failed to follow user.");
-            }
-        })
-        .catch(error => {
-            console.log('There was a problem with the fetch operation:', error); // Handle errors
-        });
-    });
-});
-
-
-// for follow button
-
-document.querySelectorAll('.followbtn').forEach(function(button) {
-    button.addEventListener('click', function() {
-        var user_id_v = this.getAttribute('data-user-id');
-
-        // Prepare the URL and data
-        const url = 'assets/php/ajax.php?follow';
-        
-        var button= this;
-        button.setAttribute('disabled', true); // Disable the button
-        const data = new URLSearchParams();
-        data.append('user_id', user_id_v);
-        console.log(data)
-        // Use the fetch API to make the request
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: data
-        })
-        .then(response => {
-          // console.log(response.text());
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text(); // Parse the JSON from the response
-        })
-        .then(responseData => {
-          const cleanedData = responseData.trim();
-          const jsonData = JSON.parse(cleanedData);
-          console.log(jsonData); 
-            if (jsonData.status) {
-              button.setAttribute('data-user-id', 0); // Set the data-user-id attribute
-              button.textContent = 'Followed'; // Change the button text
-              button.style.backgroundColor="gray";
-            } else {
-                // Handle failure response
-                button.setAttribute('disabled', false); // Disable the button
-
-                console.log("Failed to follow user.");
-            }
-        })
-        .catch(error => {
-            console.log('There was a problem with the fetch operation:', error); // Handle errors
-        });
-    });
-});
-
-
-      </script>
