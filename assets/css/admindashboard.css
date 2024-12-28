@@ -4,7 +4,27 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
 }
-
+.edit,
+.delete,
+.block,
+.addAdmin {
+  display: inline-block;
+  margin-bottom: 5px;
+  padding: 5px;
+  text-decoration: none;
+  color: #000000;
+  border-radius: 5px;
+  background-color: rgb(176 176 229);
+  cursor: pointer;
+  height: fit-content;
+    min-width: 60px;
+}
+.edit:hover,
+.delete:hover,
+.addAdmin:hover,
+.block:hover {
+  background-color: rgb(201 201 217);
+}
 /* Hamburger Icon (Visible on small screens) */
 .hamburger {
   display: none;
@@ -12,7 +32,7 @@ body {
   justify-content: space-between;
   width: 30px;
   height: 24px;
-  position: absolute;
+  position: fixed;
   top: 15px;
   left: 15px;
   cursor: pointer;

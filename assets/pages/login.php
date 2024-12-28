@@ -10,51 +10,34 @@ if (isset($_SESSION['unique_id'])) {
 // If the user is not logged in, the login form will be displayed below
 ?>
 
-
-
-<div class="main">
-    <div class="container">
-        <div class="logo">
-
-            <img src="assets/images/logo-color.png" alt="nothing">
-
-            <p> Building connections for a better tomorrow.</p>
-
-        </div>
-        <div class="form">
-            <h2>login</h2>
-            <form method="POST" id="loginForm" action="assets/php/actions.php?login" novalidate>
-
-                <div class="input">
-
-                    <input type="text" style="margin: 10px 0px;" name="username_email" id="username_email"
-                        value="<?= showFormData('username_email') ?>" placeholder="Enter your email/username" required>
-
-                    <?= showError('username_email') ?>
-                </div>
-
-
-                <div class="input">
-
-                    <input id="password_login" type="password" value="<?= showFormData('password') ?>" name="password"
-                        placeholder="Password" required>
-                    <?= showError('password') ?>
-                    <?= showError('checkuser') ?>
-
-
-                </div>
-
-                <div class="link forgot">
-                    <a href="?forgotpassword&newfp">forgot password?</a>
-                </div>
-                <div class="line"></div>
-                <div class="error-text">Error</div>
-                <div class="submit">
-                    <input type="submit" value="login" class="button">
-                </div>
-
-            </form>
-            <div class="link">Don't have an account? <a href="?signup">signup</a> </div>
-        </div>
+<div class="container">
+    <div class="logo">
+        <img src="assets/images/logo-color.png" alt="Connect-All Logo">
     </div>
+    <h2>Welcome Back!</h2>
+    <p class="tagline">Building connections for a better tomorrow.</p>
+    <form method="POST" id="loginForm" action="assets/php/actions.php?login">
+        <div class="inputBox">
+            <input type="text" name="username_email" id="username_email"
+                value="<?= showFormData('username_email') ?>" required>
+            <label for="username">Username/Email</label>
+            <?= showError('username_email') ?>
+        </div>
+        <div class="inputBox">
+            <input id="password_login" type="password" value="<?= showFormData('password') ?>" name="password"
+                required>
+            <label for="password">Password</label>
+            <?= showError('password') ?>
+            <?= showError('checkuser') ?>
+        </div>
+        <div class="links">
+            <a href="?forgotpassword&newfp">Forgot Password?</a>
+            <a href="?signup">Sign Up</a>
+        </div>
+        <input type="submit" value="login">
+    </form>
+    <footer>
+        <p>Powered by <a href="#">Connect-All</a></p>
+    </footer>
 </div>
+

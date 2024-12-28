@@ -20,7 +20,8 @@ $sql_users = "CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     ac_status INT(11) NOT NULL DEFAULT 0 COMMENT '0=not verified, 1=active, 2=blocked',
-    is_admin INT(11) NOT NULL DEFAULT 0 COMMENT '0=regular user, 1=admin'
+    is_admin INT(11) NOT NULL DEFAULT 0 COMMENT '0=regular user, 1=admin',
+    original_status TINYINT DEFAULT NULL
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
 
 // SQL to create the 'posts' table if it doesn't exist

@@ -23,8 +23,8 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     showPage('header', ['page_title' => 'connect - home', 'css' => ['navbar', 'feed']]);
     showPage('navbar');
     showPage('feed');
-} elseif (isset($_SESSION['Auth']) && ($user['ac_status'] == 0) && !$pagecount) {
-    showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'verify']);
+} elseif ((isset($_SESSION['Auth']) && ($user['ac_status'] == 0) && !$pagecount) || (isset($_SESSION['Auth']) && ($user['ac_status']=='0') && isset($_GET['resended']))) {
+    showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'login']);
     showPage('verify_email');
 } elseif (isset($_SESSION['Auth']) && ($user['ac_status'] == 2) && !$pagecount) {
     showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'blocked']);
@@ -65,14 +65,14 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         // print_r($profile);
         // print_r($profile_post);
     }
-} elseif (isset($_GET['signup']) && !($_SESSION['Auth'])) {
-    showPage('header', ['page_title' => 'connect - signup', 'css' => 'signup',]);
+} elseif (isset($_GET['signup']) && !(isset($_SESSION['Auth']))) {
+    showPage('header', ['page_title' => 'connect - signup', 'css' => 'register',]);
     showPage('signup');
-} elseif (isset($_GET['login']) && !($_SESSION['Auth'])) {
-    showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
+} elseif (isset($_GET['login']) && !(isset($_SESSION['Auth']))) {
+    showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
     showPage('login');
 } elseif (isset($_GET['forgotpassword'])) {
-    showPage('header', ['page_title' => 'connect - forgot password', 'css' => 'signup']);
+    showPage('header', ['page_title' => 'connect - forgot password', 'css' => 'login']);
     showPage('forgot_password');
 } elseif (isset($_SESSION['Auth']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
     if (isset($_GET['adminDashboard'])) {
@@ -95,17 +95,25 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     }
     if (isset($_GET['postList'])) {
         $currentPage = 'posts';
-        showPage('header', ['page_title' => 'connect - posts list ', 'css' => ['navbar', 'admindashboard']]);
+        showPage('header', ['page_title' => 'connect - posts list ', 'css' => ['navbar', 'admindashboard','feed']]);
         showPage('admin/navbar');
         showPage('admin/postList');
     }
+    if (isset($_GET['editSingleUser'])  && !empty($_GET['id'])) {
+        $currentPage = 'users';
+        $user_id = $_GET['id'];
+        $users=getAdminEditUserById($user_id);
+        showPage('header', ['page_title' => 'connect - posts list ', 'css' => ['navbar', 'admindashboard']]);
+        showPage('admin/navbar');
+        showPage('admin/editUser');
+    }
 } else {
-    if (isset($_SESSION['Auth'])) {
+    if (isset($_SESSION['Auth'])  ) {
         showPage('header', ['page_title' => 'connect - home', 'css' => ['feed', 'navbar']]);
-        showPage('navbar');
-        showPage('feed');
+       
+        
     } else {
-        showPage('header', ['page_title' => 'connect - login', 'css' => 'signup']);
+        showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
         showPage('login');
     }
 }
