@@ -139,8 +139,9 @@ if (isset($_GET['changepassword'])) {
 if (isset($_GET['updateprofile'])) {
     // print_r($_POST); 
     //   print_r($_FILES);
-
-
+//  echo "sjc";
+//  var_dump($_POST);
+var_dump($_FILES['profile_pic']);
 
     $response = validateUpdateForm($_POST, $_FILES['profile_pic']);
     // print_r($response);

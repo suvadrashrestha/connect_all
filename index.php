@@ -30,7 +30,7 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
     showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'blocked']);
     showPage('blocked');
 } elseif (isset($_SESSION['Auth']) && isset($_GET['editprofile']) && $user['ac_status'] == 1) {
-    showPage('header', ['page_title' => 'connect - edit profile', 'css' => ['edit_profile', 'navbar']]);
+    showPage('header', ['page_title' => 'connect - edit profile', 'css' => [ 'navbar','edit_profile']]);
     showPage('navbar');
     showPage('edit_profile');
 } elseif (isset($_SESSION['Auth']) && isset($_GET['search']) && $user['ac_status'] == 1) {

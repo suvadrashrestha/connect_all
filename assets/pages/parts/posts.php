@@ -11,7 +11,7 @@ $comments = getComments($post['id']);
   <div class="profile-bar">
     <a href="?u=<?= $post['username'] ?>" style="text-decoration:none ; display:inline; color:black">
       <div style="display: flex; gap: 10px; align-items: center">
-        <img style="border: 1px solid gray" src="assets/images/profiles/<?= $post['profile_pic'] ?>"
+        <img loading='lazy' style="border: 1px solid gray; object-fit:cover" src="assets/images/profiles/<?= $post['profile_pic'] ?>"
           width="40px" height="40px" class="profile-pic" />
 
 
@@ -55,7 +55,7 @@ $comments = getComments($post['id']);
       <?php
       } else {
       ?>
-        <img src="assets/images/icon/reaction_icon.jpg" alt="love" width="16px" height="16px" style="display:none"
+        <img loading='lazy' src="assets/images/icon/reaction_icon.jpg" alt="love" width="16px" height="16px" style="display:none"
           id="postImage_<?= $post['id'] ?>" />
       <?php
       }
@@ -77,12 +77,12 @@ $comments = getComments($post['id']);
       <?php
       if (checkLikeStatus($post['id'])) {
       ?>
-        <img src="assets/images/icon/reaction_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
+        <img loading='lazy' src="assets/images/icon/reaction_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
           data-post-id="<?= $post['id'] ?>" />
       <?php
       } else {
       ?>
-        <img src="assets/images/icon/unfill_heart_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
+        <img loading='lazy' src="assets/images/icon/unfill_heart_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
           data-post-id="<?= $post['id'] ?>" />
       <?php
       }
@@ -92,7 +92,7 @@ $comments = getComments($post['id']);
     </div>
 
     <div style="cursor:pointer">
-      <img src="assets/images/icon/comment_icon.jpg" alt="love" width="15px" height="15px" />
+      <img loading='lazy' src="assets/images/icon/comment_icon.jpg" alt="love" width="15px" height="15px" />
       <span data-post-id="<?= $post['id'] ?>" class="hover_comment">Comment </span>
     </div>
 

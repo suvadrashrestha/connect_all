@@ -472,33 +472,88 @@ function validateUpdateForm($form_data, $image_data)
             $response['status'] = false;
             $response['field'] = 'profile_pic';
         }
-        if ($size > 1000) {
-            $response['msg'] = "upload image less than 1 mb";
-            $response['status'] = false;
-            $response['field'] = 'profile_pic';
-        }
     }
     return $response;
 }
 //function for updating profile
 
-function updateProfile($data, $imagedata)
+function updateProfile($data, $image)
 {
     global $db;
     $first_name = mysqli_real_escape_string($db, $data['first_name']);
     $last_name = mysqli_real_escape_string($db, $data['last_name']);
     $username = mysqli_real_escape_string($db, $data['username']);
-
-    $profile_pic = "";
-    if ($imagedata['name']) {
-        $image_name = time() . basename($imagedata['name']);
+    $gender = mysqli_real_escape_string($db, $data['gender']);
+    if ($image['name']) {
+        // Get the MIME type of the uploaded file
+        $mimeType = mime_content_type($image['tmp_name']);
+    
+        // Verify that the file is an image
+        if (strpos($mimeType, 'image/') !== 0) {
+            die("The uploaded file is not a valid image.");
+        }
+    
+        // Create an image resource based on the MIME type
+        $img = null;
+        switch ($mimeType) {
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                $img = @imagecreatefromjpeg($image['tmp_name']);
+                break;
+            case 'image/png':
+                $img = @imagecreatefrompng($image['tmp_name']);
+                break;
+            case 'image/gif':
+                $img = @imagecreatefromgif($image['tmp_name']);
+                break;
+            case 'image/webp':
+                $img = @imagecreatefromwebp($image['tmp_name']);
+                break;
+            default:
+                die("Unsupported image format.");
+        }
+    
+        // Ensure the image resource was created successfully
+        if (!$img) {
+            die("Failed to process the uploaded image. The file might be corrupted.");
+        }
+    
+        // Adjust orientation for JPEG images using EXIF data
+        if ($mimeType === 'image/jpeg' || $mimeType === 'image/pjpeg') {
+            $exif = @exif_read_data($image['tmp_name']);
+            if ($exif && isset($exif['Orientation'])) {
+                switch ($exif['Orientation']) {
+                    case 3:
+                        $img = imagerotate($img, 180, 0);
+                        break;
+                    case 6:
+                        $img = imagerotate($img, -90, 0);
+                        break;
+                    case 8:
+                        $img = imagerotate($img, 90, 0);
+                        break;
+                }
+            }
+        }
+    
+        // Generate a new name for the image
+        $image_name = time() . '.webp';
         $image_dir = "../images/profiles/" . $image_name;
-        move_uploaded_file($imagedata['tmp_name'], $image_dir);
-        $profile_pic = ", profile_pic='$image_name'";
+    
+        // Convert the image to WebP format
+        if (!imagewebp($img, $image_dir, 80)) { // Quality: 80
+            die("Failed to save the image.");
+        }
+    
+        // Free up memory
+        imagedestroy($img);
+    
+        echo "Image uploaded and saved successfully.";
     }
-
-    $query = "UPDATE users SET first_name = '$first_name', last_name = '$last_name', username = '$username' $profile_pic
-WHERE id = '" . $_SESSION['userdata']['id'] . "'";
+    
+    $profile_pic = isset($image_name) ? ",profile_pic='$image_name'" : "";
+    $query = "UPDATE users SET first_name = '$first_name',gender='$gender', last_name = '$last_name', username = '$username' $profile_pic
+                WHERE id = '" . $_SESSION['userdata']['id'] . "'";
 
     return mysqli_query($db, $query);
 }
@@ -528,64 +583,72 @@ function createPost($text, $image)
     $user_id = $_SESSION['userdata']['id'];
 
     if ($image['name']) {
-        // Get the image file extension
-        $image_extension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
-
-        // Check if the image is a valid type (jpg, jpeg, png, gif)
-
-        // Assuming $image is the uploaded file array
-        if (in_array($image_extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            // Get EXIF data to manage orientation
+        // Get the MIME type of the uploaded file
+        $mimeType = mime_content_type($image['tmp_name']);
+    
+        // Verify that the file is an image
+        if (strpos($mimeType, 'image/') !== 0) {
+            die("The uploaded file is not a valid image.");
+        }
+    
+        // Create an image resource based on the MIME type
+        $img = null;
+        switch ($mimeType) {
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                $img = @imagecreatefromjpeg($image['tmp_name']);
+                break;
+            case 'image/png':
+                $img = @imagecreatefrompng($image['tmp_name']);
+                break;
+            case 'image/gif':
+                $img = @imagecreatefromgif($image['tmp_name']);
+                break;
+            case 'image/webp':
+                $img = @imagecreatefromwebp($image['tmp_name']);
+                break;
+            default:
+                die("Unsupported image format.");
+        }
+    
+        // Ensure the image resource was created successfully
+        if (!$img) {
+            die("Failed to process the uploaded image. The file might be corrupted.");
+        }
+    
+        // Adjust orientation for JPEG images using EXIF data
+        if ($mimeType === 'image/jpeg' || $mimeType === 'image/pjpeg') {
             $exif = @exif_read_data($image['tmp_name']);
-            $orientation = isset($exif['Orientation']) ? $exif['Orientation'] : null;
-
-            // Create a new image from the uploaded file
-            $img = null;
-            switch ($image_extension) {
-                case 'jpg':
-                case 'jpeg':
-                    $img = imagecreatefromjpeg($image['tmp_name']);
-                    break;
-                case 'png':
-                    $img = imagecreatefrompng($image['tmp_name']);
-                    break;
-                case 'gif':
-                    $img = imagecreatefromgif($image['tmp_name']);
-                    break;
-            }
-
-            // Check if the image was created successfully
-            if ($img) {
-                // Adjust image orientation if needed
-                if ($orientation) {
-                    switch ($orientation) {
-                        case 3:
-                            // 180 rotate left
-                            $img = imagerotate($img, 180, 0);
-                            break;
-                        case 6:
-                            // 90 rotate right
-                            $img = imagerotate($img, -90, 0);
-                            break;
-                        case 8:
-                            // 90 rotate left
-                            $img = imagerotate($img, 90, 0);
-                            break;
-                    }
+            if ($exif && isset($exif['Orientation'])) {
+                switch ($exif['Orientation']) {
+                    case 3:
+                        $img = imagerotate($img, 180, 0);
+                        break;
+                    case 6:
+                        $img = imagerotate($img, -90, 0);
+                        break;
+                    case 8:
+                        $img = imagerotate($img, 90, 0);
+                        break;
                 }
-
-                // Generate a new name for the image
-                $image_name = time() . '.webp';
-                $image_dir = "../images/posts/" . $image_name;
-
-                // Convert the image to WebP format and compress it
-                imagewebp($img, $image_dir, 10); // 10 is the quality (0-100)
-
-                // Free up memory
-                imagedestroy($img);
             }
         }
+    
+        // Generate a new name for the image
+        $image_name = time() . '.webp';
+        $image_dir = "../images/posts/" . $image_name;
+    
+        // Convert the image to WebP format
+        if (!imagewebp($img, $image_dir, 80)) { // Quality: 80
+            die("Failed to save the image.");
+        }
+    
+        // Free up memory
+        imagedestroy($img);
+    
+        echo "Image uploaded and saved successfully.";
     }
+    
 
     // If there's no image, set $image_name to NULL
     $image_name = isset($image_name) ? $image_name : NULL;

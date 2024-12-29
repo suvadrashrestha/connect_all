@@ -1,7 +1,7 @@
 <div class="follow" style="padding: 5px 10px; margin-bottom: 15px; ">
     <div style="display: flex; align-items: center; gap: 10px; flex: 4">
         <a href="?u=<?= $suser['username'] ?>" style="text-decoration:none">
-            <img class="image" src="assets/images/profiles/<?= $suser['profile_pic'] ?>" />
+            <img style="border: 1px solid gray; object-fit:cover" loading="lazy" class="image" src="assets/images/profiles/<?= $suser['profile_pic'] ?>" />
             <div>
                 <span
                     class="name"

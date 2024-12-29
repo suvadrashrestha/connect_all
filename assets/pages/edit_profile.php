@@ -1,71 +1,86 @@
 <?php global $user; ?>
 
-<form method="post" action="assets/php/actions.php?updateprofile" enctype="multipart/form-data" 
-      style="max-width: 800px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 10px; padding: 20px; background-color: #f9f9f9;">
-    <h1 style="text-align: center; color: #333;">Edit Profile</h1>
-    
-    <!-- Profile Picture -->
-    <div style="text-align: center; margin-bottom: 20px;">
-        <img style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;" 
-             src="assets/images/profiles/<?= $user['profile_pic'] ?: 'default_profile_pic.png' ?>" alt="Profile Picture">
-    </div>
+<div class="editContainer">
+    <div class="card">
+        <h1>Update Profile</h1>
+        <p class="subtitle">Keep your information up to date</p>
+        <form id="profileForm" method="post" action="assets/php/actions.php?updateprofile" enctype="multipart/form-data">
+            <div class="form-container">
+                <div class="profile-section">
+                    <div class="profile-pic-container">
+                        <img class="profile-pic"
+                            src="assets/images/profiles/<?= $user['profile_pic'] ?: 'default_profile_pic.png' ?>" alt="Profile Picture">
+                        <div class="profile-pic-overlay" onclick="document.getElementById('fileInput').click()">
+                            <svg class="camera-icon" viewBox="0 0 24 24">
+                                <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z" />
+                                <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
+                            </svg>
+                        </div>
+                        <input name="profile_pic" type="file" id="fileInput">
+                        <?= showError('profile_pic') ?>
+                    </div>
 
-    <!-- Change Profile Picture -->
-    <div style="margin-bottom: 20px;">
-        <label for="formFile" style="font-weight: bold; display: block; margin-bottom: 5px; text-align:center;">Change Profile Picture</label>
-        <input name="profile_pic" type="file" id="formFile" 
-               style="width: 40%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;margin-left:240px;">
-        <?= showError('profile_pic') ?>
-    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input name="username" id="username" class="form-control" value="<?= $user['username'] ?>" type="text"
+                            placeholder="Enter your username">
+                        <?= showError('username') ?>
+                    </div>
+                </div>
 
-    <!-- First Name -->
-    <div style="margin-bottom: 20px;">
-        <label for="first_name" style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">First Name</label>
-        <input name="first_name" value="<?= $user['first_name'] ?>" type="text" id="first_name" 
-               placeholder="Enter your first name" 
-               style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;margin-left:40px;">
-        <?= showError('first_name') ?>
-    </div>
+                <div class="details-section">
+                    <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input id="firstname" class="form-control" name="first_name" value="<?= $user['first_name'] ?>" type="text"
+                            placeholder="Enter your first name">
+                        <?= showError('first_name') ?>
+                    </div>
 
-    <!-- Last Name -->
-    <div style="margin-bottom: 20px;">
-        <label for="last_name" style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">Last Name</label>
-        <input name="last_name" value="<?= $user['last_name'] ?>" type="text" id="last_name" 
-               placeholder="Enter your last name" 
-               style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;margin-left:40px;">
-        <?= showError('last_name') ?>
-    </div>
+                    <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input id="lastname" class="form-control" name="last_name" value="<?= $user['last_name'] ?>" type="text"
+                            placeholder="Enter your last name">
+                        <?= showError('last_name') ?>
+                    </div>
 
-    <!-- Gender -->
-    <div style="margin-bottom: 20px;">
-        <label style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">Gender</label>
-        <div style="display: flex; gap: 20px; align-items: center;">
-            <label style="display: flex; align-items: center; gap: 5px;margin-left:40px;">
-                <input type="radio" name="exampleRadios" value="1" <?= $user['gender'] == 1 ? "checked" : "" ?>> Male
-            </label>
-            <label style="display: flex; align-items: center; gap: 5px;">
-                <input type="radio" name="exampleRadios" value="2" <?= $user['gender'] == 2 ? "checked" : "" ?>> Female
-            </label>
-            <label style="display: flex; align-items: center; gap: 5px;">
-                <input type="radio" name="exampleRadios" value="0" <?= $user['gender'] == 0 ? "checked" : "" ?>> Other
-            </label>
-        </div>
-    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="gender" value="1" <?= $user['gender'] == 1 ? "checked" : "" ?>> Male
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="2" <?= $user['gender'] == 2 ? "checked" : "" ?>> Female
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="0" <?= $user['gender'] == 0 ? "checked" : "" ?>> Other
+                            </label>
+                        </div>
+                    </div>
 
-    <!-- Email -->
-    <div style="margin-bottom: 20px;">
-        <label for="email" style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">Email</label>
-        <input type="email" id="email" value="<?= $user['email'] ?>" disabled 
-               style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f1f1f1;margin-left:40px;">
-    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input style="color:gray" type="email" id="email" class="form-control" value="<?= $user['email'] ?>" disabled>
+                    </div>
 
-   
-
-    <!-- Submit Button -->
-    <div style="text-align: center; margin-top: 20px;">
-        <button type="submit" 
-                style="width: 150px; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
-            Update
-        </button>
+                    <button type="button" class="update-btn" id="updateBtn">Update Profile</button>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
+<script>
+    // JavaScript for confirmation dialog
+    document.getElementById('updateBtn').addEventListener('click', function () {
+        const confirmUpdate = confirm("Do you really want to update your profile?");
+        if (confirmUpdate) {
+            document.getElementById('profileForm').submit();
+        }
+    });
+
+    // Automatically submit form when profile picture is selected
+    document.getElementById('fileInput').addEventListener('change', function () {
+        document.getElementById('profileForm').submit();
+    });
+</script>

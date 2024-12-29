@@ -6,14 +6,14 @@ global $search_param;
 <header style="height:60px">
     <div class="header">
         <a href="?">
-            <img class="logo" src="assets/images/logo-color.png" alt="logo" /></a>
+            <img style="border: 1px solid gray; object-fit:cover"  loading="lazy" class="logo" src="assets/images/logo-color.png" alt="logo" /></a>
         <!-- <form> -->
         <form id=searchForm method="GET"> <input value="<?= $search_param ?>" style="width:100%" type="text" id="search"
                 name="search" placeholder="looking for someone.." />
         </form>
         <!-- </form> -->
         <div class="user-menu">
-            <img class="logo" src="assets/images/profiles/<?= $user['profile_pic'] ?>" alt="logo" />
+            <img style="border: 1px solid gray; object-fit:cover" loading="lazy" class="logo" src="assets/images/profiles/<?= $user['profile_pic'] ?>" alt="logo" />
             <div id="dropdown">
                 <!-- Dropdown Button (Arrow) -->
                 <button class="dropdown-btn" id="dropdownButton">Menu</button>

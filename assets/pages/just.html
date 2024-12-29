@@ -1,0 +1,70 @@
+<form method="post" action="assets/php/actions.php?updateprofile" enctype="multipart/form-data"
+    style="max-width: 800px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 10px; padding: 20px; background-color: #f9f9f9;">
+    <h1 style="text-align: center; color: #333;">Edit Profile</h1>
+
+    <!-- Profile Picture -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;"
+            src="assets/images/profiles/<?= $user['profile_pic'] ?: 'default_profile_pic.png' ?>" alt="Profile Picture">
+    </div>
+
+    <!-- Change Profile Picture -->
+    <div style="margin-bottom: 20px;">
+        <label for="formFile" style="font-weight: bold; display: block; margin-bottom: 5px; text-align:center;">Change Profile Picture</label>
+        <input name="profile_pic" type="file" id="formFile"
+            style="width: 40%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;margin-left:240px;">
+        <?= showError('profile_pic') ?>
+    </div>
+
+    <!-- First Name -->
+    <div style="margin-bottom: 20px;">
+        <label for="first_name" style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">First Name</label>
+        <input name="first_name" value="<?= $user['first_name'] ?>" type="text" id="first_name"
+            placeholder="Enter your first name"
+            style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;margin-left:40px;">
+        <?= showError('first_name') ?>
+    </div>
+
+    <!-- Last Name -->
+    <div style="margin-bottom: 20px;">
+        <label for="last_name" style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">Last Name</label>
+       
+    </div>
+    <!-- Gender -->
+    <div style="margin-bottom: 20px;">
+        <label for="username" style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">Username</label>
+        <input name="username" value="<?= $user['username'] ?>" type="text" id="last_name"
+            placeholder=" Enter your username" style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;margin-left:40px;">
+        <?= showError('username') ?>
+    </div>
+
+    <!-- Gender -->
+    <div style="margin-bottom: 20px;">
+        <label style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">Gender</label>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <label style="display: flex; align-items: center; gap: 5px;margin-left:40px;">
+               
+            </label>
+            <label style="display: flex; align-items: center; gap: 5px;">
+            </label>
+            <label style="display: flex; align-items: center; gap: 5px;">
+            </label>
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div style="margin-bottom: 20px;">
+        <label for="email" style="font-weight: bold; display: block; margin-bottom: 5px;margin-left:40px;">Email</label>
+        
+    </div>
+
+
+
+    <!-- Submit Button -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="submit"
+            style="width: 150px; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            Update
+        </button>
+    </div>
+</form>
