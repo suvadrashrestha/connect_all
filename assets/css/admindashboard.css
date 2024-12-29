@@ -14,15 +14,25 @@ body {
   text-decoration: none;
   color: #000000;
   border-radius: 5px;
-  background-color: rgb(176 176 229);
   cursor: pointer;
   height: fit-content;
-    min-width: 60px;
+  min-width: 60px;
 }
-.edit:hover,
-.delete:hover,
-.addAdmin:hover,
-.block:hover {
+.addAdmin {
+  background-color: #3b82f6;
+}
+.block,
+.delete {
+  background-color: #ef4444;
+}
+.addAdmin:hover {
+  background-color: #6693db;
+}
+.block:hover,
+.delete:hover {
+  background-color: #d85c5c;
+}
+.edit:hover {
   background-color: rgb(201 201 217);
 }
 /* Hamburger Icon (Visible on small screens) */

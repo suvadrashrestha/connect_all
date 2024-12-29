@@ -14,7 +14,7 @@ if (isset($_SESSION['unique_id'])) {
     <div class="logo">
         <img src="assets/images/logo-color.png" alt="Connect-All Logo">
     </div>
-    <h2>Welcome Back!</h2>
+    <h2>Welcome!</h2>
     <p class="tagline">Building connections for a better tomorrow.</p>
     <form method="POST" id="loginForm" action="assets/php/actions.php?login">
         <div class="inputBox">

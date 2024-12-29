@@ -32,7 +32,7 @@ if (isset($_SESSION['forgot_code']) && (!isset($_SESSION['auth_temp']))) {
       <?php
       if ($action == 'verifycode') {
       ?>
-        <p style="text-align: center;margin:20px 0px;">Enter 6 Digit code Sended to you <?= $_SESSION['forgot_email'] ?></p>
+        <p style="text-align: center;margin:20px 0px;">Enter 6 digit code sended to you <?= $_SESSION['forgot_email'] ?></p>
         <div class="inputBox" style="margin:0px">
           <input type="text" name="code" class="email" required onpaste="off">
           <label for="code">Code</label>

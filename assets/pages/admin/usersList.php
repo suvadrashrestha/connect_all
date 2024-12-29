@@ -41,7 +41,7 @@ foreach ($users as $key => $user) {
     ?>
     <!-- Main Content -->
     <main class="content">
-   
+
 
         <!-- Second Row: Table -->
         <div class="user-table">
@@ -72,21 +72,23 @@ foreach ($users as $key => $user) {
                             </td>
                             <td><?= htmlspecialchars($user['ac_status']) ?></td>
                             <td>
-                                <?php
-                                 if($user['ac_status']=="Active"){
-                                    ?>
-                                     <a class="addAdmin" ac_status="<?= htmlspecialchars($user['ac_status']) ?>" username="<?= htmlspecialchars($user['username']) ?>"
-                                     user_id="<?= htmlspecialchars($user['id']) ?>"> Add Admin</a>
+                                <div style="display: flex;gap: 5px;flex-direction:column">
                                     <?php
-                                 }
-                                ?>
-                           
-                                <?php
-                                if ($user['ac_status'] == 2) {
-                                }
-                                ?>
-                                <a class="block" ac_status="<?= htmlspecialchars($user['ac_status']) ?>" username="<?= htmlspecialchars($user['username']) ?>"
-                                    user_id="<?= htmlspecialchars($user['id']) ?>"> <?= $user['buttonName'] ?></a>
+                                    if ($user['ac_status'] == "Active") {
+                                    ?>
+                                        <a class="addAdmin" ac_status="<?= htmlspecialchars($user['ac_status']) ?>" username="<?= htmlspecialchars($user['username']) ?>"
+                                            user_id="<?= htmlspecialchars($user['id']) ?>"> Add Admin</a>
+                                    <?php
+                                    }
+                                    ?>
+
+                                    <?php
+                                    if ($user['ac_status'] == 'Blocked') {
+                                    }
+                                    ?>
+                                    <a class="block" ac_status="<?= htmlspecialchars($user['ac_status']) ?>" username="<?= htmlspecialchars($user['username']) ?>"
+                                        user_id="<?= htmlspecialchars($user['id']) ?>"> <?= $user['buttonName'] ?></a>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -128,9 +130,9 @@ foreach ($users as $key => $user) {
                 event.preventDefault(); // Prevent default link behavior
                 const userId = button.getAttribute("user_id");
                 const username = button.getAttribute("username");
-               
 
-                const confirmation = confirm( `Are you sure you want to make ${username} as admin?`);
+
+                const confirmation = confirm(`Are you sure you want to make ${username} as admin?`);
 
                 if (confirmation) {
                     window.location.href =

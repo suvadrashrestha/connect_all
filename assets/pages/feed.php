@@ -10,7 +10,7 @@ global $follow_suggestions;
     <div class="follow">
       <a href="?u=<?= $user['username'] ?>" style="text-decoration:none; color:black">
         <div style="display: flex; align-items: center; gap: 10px; flex: 4">
-          <img class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
+          <img style="border: 1px solid gray; object-fit:cover"  loading="lazy" class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
           <div>
             <span style="display: block; font-size: 16px;">
               <?= ucfirst($user['first_name']) ?> <?= ucfirst($user['last_name']) ?>
@@ -27,7 +27,7 @@ global $follow_suggestions;
   <!-- post  -->
   <section class="profile">
     <div class="newPost">
-      <img class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
+      <img  style="border: 1px solid gray; object-fit:cover" loading="lazy" class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
       <button class="photo_button" id="openModal"> What's on your mind?</button>
     </div>
 
