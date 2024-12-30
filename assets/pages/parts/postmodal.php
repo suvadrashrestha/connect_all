@@ -52,6 +52,7 @@
 <script>
     const modal = document.getElementById("createPostModal");
     const openModalBtn = document.getElementById("openModal");
+    const openPostModalBtn = document.getElementById("openPostModal");
     const closeModalBtn = document.getElementById("closeModal1");
     const fileInput = document.getElementById("file-input");
     const imagePreviewContainer = document.getElementById(
@@ -60,16 +61,27 @@
     const postBtn = document.getElementById("postBtn");
     const postText = document.getElementById("postText");
     // Function to open the modal
-    if(openModalBtn){
-    openModalBtn.onclick = function() {
+    if (openModalBtn) {
+        openModalBtn.onclick = function() {
 
-        modal.style.display = "flex";
-        fileInput.value = ""; // Reset file input
-        imagePreviewContainer.innerHTML = ""; // Clear preview
-        closeModalBtn.onclick = function() {
-            modal.style.display = "none"
-        }
-    };
+            modal.style.display = "flex";
+            fileInput.value = ""; // Reset file input
+            imagePreviewContainer.innerHTML = ""; // Clear preview
+            closeModalBtn.onclick = function() {
+                modal.style.display = "none"
+            }
+        };
+    }
+    if (openPostModalBtn) {
+        openPostModalBtn.onclick = function() {
+
+            modal.style.display = "flex";
+            fileInput.value = ""; // Reset file input
+            imagePreviewContainer.innerHTML = ""; // Clear preview
+            closeModalBtn.onclick = function() {
+                modal.style.display = "none"
+            }
+        };
     }
 
     // Function to close the modal

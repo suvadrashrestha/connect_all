@@ -72,7 +72,7 @@ foreach ($users as $key => $user) {
                             </td>
                             <td><?= htmlspecialchars($user['ac_status']) ?></td>
                             <td>
-                                <div style="display: flex;gap: 5px;flex-direction:column">
+                                <div style="display: flex;gap: 5px;flex-direction:column;width:100px">
                                     <?php
                                     if ($user['ac_status'] == "Active") {
                                     ?>

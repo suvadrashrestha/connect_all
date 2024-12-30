@@ -39,8 +39,15 @@ global $user;
                         } else {
                         ?>
                             <button class="followbtn follows" data-user-id='<?= $profile['id'] ?>' id="followBtn">Follow</button>
-                    <?php
+                        <?php
                         }
+                    } else {
+                        ?>
+                        <a href="?editprofile" style="text-decoration: none; margin-top: 10px;">
+                            <button class=" follows">Edit Profile</button>
+                        </a>
+
+                    <?php
                     }
                     ?>
 
@@ -58,16 +65,16 @@ global $user;
                     <button style="padding: 5px;" user_id=<?= $profile['id'] ?> id="toggleBtn">Switch to Following</button>
                 </div>
                 <div id="connectionsList">
-                <?php
+                    <?php
                     foreach ($profile['followers'] as $users) {
                     ?>
                         <div class="connection-item">
-                            <a href="?u=<?= $users['username'] ?>"> <img loading="lazy" style="object-fit: cover;" src="assets/images/profiles/<?=$users['profile_pic']?>"class="connection-pic"></a>
+                            <a href="?u=<?= $users['username'] ?>"> <img loading="lazy" style="object-fit: cover;" src="assets/images/profiles/<?= $users['profile_pic'] ?>" class="connection-pic"></a>
                             <div>
-                                <strong><?=ucfirst($users['first_name'])?> <?=ucfirst($users['last_name'])?></strong>
-                                <div><?=$users['username']?></div>
+                                <strong><?= ucfirst($users['first_name']) ?> <?= ucfirst($users['last_name']) ?></strong>
+                                <div><?= $users['username'] ?></div>
                             </div>
-                           
+
                         </div>
                     <?php
                     }
@@ -185,13 +192,17 @@ global $user;
                         if ($post['post_img']) {
                     ?>
                             <div class="photo-item">
-                                <img loading="lazy" src="assets/images/posts/<?= $post['post_img'] ?>" alt="Photo">
+                                <img loading="lazy" style="cursor: pointer;" src="assets/images/posts/<?= $post['post_img'] ?>" alt="Photo">
                             </div>
                     <?php
                         }
                     }
 
                     ?>
+                </div>
+                <div class="popup-overlay" id="popupOverlay">
+                    <span class="close-btn" id="closeBtn">&times;</span>
+                    <img id="popupImage" src="" alt="Popup Photo">
                 </div>
                 <div style="padding: 10px;">
                     No photo
@@ -272,4 +283,29 @@ include 'parts/postmodal.php';
             }
         });
     });
+    const photosGrid = document.getElementById('photosGrid');
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupImage = document.getElementById('popupImage');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // Event listener for image clicks
+        photosGrid.addEventListener('click', (event) => {
+            if (event.target.tagName === 'IMG') {
+                const imgSrc = event.target.src;
+                popupImage.src = imgSrc; // Set the clicked image as the popup image
+                popupOverlay.style.display = 'flex'; // Show the popup
+            }
+        });
+
+        // Close the popup when the close button is clicked
+        closeBtn.addEventListener('click', () => {
+            popupOverlay.style.display = 'none';
+        });
+
+        // Close the popup when clicking outside the image
+        popupOverlay.addEventListener('click', (event) => {
+            if (event.target === popupOverlay) {
+                popupOverlay.style.display = 'none';
+            }
+        });
 </script>

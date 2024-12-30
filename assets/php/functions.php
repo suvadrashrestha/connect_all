@@ -1,7 +1,24 @@
 <?php
 
 require_once 'config.php';
+function checkStatus(){
+    if (isset($_SESSION['userdata'])) {
+    global $db;
+    $user_id = $_SESSION['userdata']['id'];
 
+    $query = "SELECT ac_status FROM users WHERE id = $user_id";
+    $result = $db->query($query);
+    $user_check = $result->fetch_assoc();
+
+    if ($user_check['ac_status'] == '2') {
+        echo "sahdbhasvdhsadjhsadbsjabd";
+        // session_destroy();
+        // showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
+        // showPage('login');
+        // exit();
+    }
+}
+}
 
 function showPage($page, $data = "")
 {

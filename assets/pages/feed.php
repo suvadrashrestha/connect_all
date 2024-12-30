@@ -7,27 +7,42 @@ global $follow_suggestions;
 
 <section class="empty-section">
   <section class="user-info">
-    <div class="follow">
+    <div class="feedSide">
+      <a href="?" style="text-decoration: none;">
+      <div  style="display: flex; align-items: center; gap: 10px; flex: 4;cursor:pointer">
+        <img style=" object-fit:cover" loading="lazy" class="image" src="assets/images/icon/home.png" />
+        <div>
+          <span style="display: block; font-size: 18px;font-weight: bold; color:black; ">
+            Home
+          </span>
+        </div>
+      </div>
+      </a>
       <a href="?u=<?= $user['username'] ?>" style="text-decoration:none; color:black">
         <div style="display: flex; align-items: center; gap: 10px; flex: 4">
-          <img style="border: 1px solid gray; object-fit:cover"  loading="lazy" class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
+          <img style="border: 1px solid gray; object-fit:cover" loading="lazy" class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
           <div>
-            <span style="display: block; font-size: 16px;">
-              <?= ucfirst($user['first_name']) ?> <?= ucfirst($user['last_name']) ?>
-            </span>
-            <span style="display: block;  font-size:16px ">
-              <?= $user['username'] ?>
+            <span style="display: block; font-size: 18px;font-weight: bold;">
+              Profile
             </span>
           </div>
         </div>
       </a>
+      <div id="openPostModal" style="display: flex; align-items: center; gap: 10px; flex: 4;cursor:pointer">
+        <img style="border: 1px solid blue; object-fit:cover" loading="lazy" class="image" src="assets/images/icon/createicon.png" />
+        <div>
+          <span style="display: block; font-size: 18px;font-weight: bold;">
+            Create
+          </span>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- post  -->
   <section class="profile">
     <div class="newPost">
-      <img  style="border: 1px solid gray; object-fit:cover" loading="lazy" class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
+      <img style="border: 1px solid gray; object-fit:cover" loading="lazy" class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
       <button class="photo_button" id="openModal"> What's on your mind?</button>
     </div>
 

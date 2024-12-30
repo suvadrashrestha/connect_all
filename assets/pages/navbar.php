@@ -20,7 +20,6 @@ global $search_param;
 
                 <!-- Dropdown Content -->
                 <div class="dropdown-content" id="dropdownContent">
-                    <a href="?editprofile">Edit Profile</a>
                     <a style="cursor:pointer" onclick="confirmLogout()">Logout</a>
                     <?php
                     if (isset($_SESSION['is_admin']) && $_SESSION['admin'] = true) {

@@ -8,15 +8,17 @@ body {
 .delete,
 .block,
 .addAdmin {
-  display: inline-block;
+  display: flex;
   margin-bottom: 5px;
   padding: 5px;
   text-decoration: none;
-  color: #000000;
+  color: #ffffff;
   border-radius: 5px;
   cursor: pointer;
   height: fit-content;
   min-width: 60px;
+  justify-content: center;
+  align-items: center;
 }
 .addAdmin {
   background-color: #3b82f6;

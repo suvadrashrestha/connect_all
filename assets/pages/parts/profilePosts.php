@@ -61,7 +61,7 @@ $comments = getComments($post['id']);
                 id="like_<?= $post['id'] ?>"> <?= count($likes) ?> like </span>
 
         </div>
-        <p style="padding-right:20px" id="comment_<?= $post['id'] ?>">
+        <p  data-post-id="<?= $post['id'] ?>" class="hover_comment" style="padding-right:20px; cursor:pointer" id="comment_<?= $post['id'] ?>">
             <?= count($comments) ?> comment
         </p>
     </div>
@@ -73,23 +73,23 @@ $comments = getComments($post['id']);
             <?php
             if (checkLikeStatus($post['id'])) {
             ?>
-                <img loading='lazy' src="assets/images/icon/reaction_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
+                <img loading='lazy' id="likeImage_<?=$post['id']?>" info="profile" src="assets/images/icon/reaction_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
                     data-post-id="<?= $post['id'] ?>" />
             <?php
             } else {
             ?>
-                <img loading='lazy' src="assets/images/icon/unfill_heart_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
+                <img loading='lazy' id="likeImage_<?=$post['id']?>" info="profile" src="assets/images/icon/unfill_heart_icon.jpg" alt="love" width="16px" height="16px" class="like_btn"
                     data-post-id="<?= $post['id'] ?>" />
             <?php
             }
             ?>
 
-            <span class="hover_love"> Love </span>
+            <span data-post-id="<?= $post['id'] ?>" class="hover_love like_btn" info="profile"> Love </span>
         </div>
 
-        <div style="cursor:pointer">
+        <div style="cursor:pointer"  data-post-id="<?= $post['id'] ?>" class="hover_comment">
             <img loading='lazy' src="assets/images/icon/comment_icon.jpg" alt="love" width="15px" height="15px" />
-            <span data-post-id="<?= $post['id'] ?>" class="hover_comment">Comment </span>
+            <span>Comment </span>
         </div>
 
 

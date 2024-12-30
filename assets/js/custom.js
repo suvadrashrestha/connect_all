@@ -3,7 +3,14 @@
 document.querySelectorAll(".like_btn").forEach(function (imgTag) {
   imgTag.addEventListener("click", async function () {
     var post_id = this.getAttribute("data-post-id");
-    var imgTag = this;
+    var info = this.getAttribute("info");
+    let imgTag;
+    if (info) {
+
+       imgTag = document.getElementById(`likeImage_${post_id}`);
+    } else {
+       imgTag = document.getElementById(`likeImg_${post_id}`);
+    }
     const url = "assets/php/ajax.php?like";
 
     // Disable the like button
@@ -18,7 +25,6 @@ document.querySelectorAll(".like_btn").forEach(function (imgTag) {
         body: JSON.stringify({ post_id: post_id }),
       });
       const data = await response.json();
-
       const postImage = document.getElementById(`postImage_${post_id}`);
       const likeCount = document.getElementById(`like_${post_id}`);
 
@@ -93,11 +99,9 @@ document.body.addEventListener("click", async function (event) {
     const comment_container = document.getElementById(
       "comment_container_" + post_id
     );
-    console.log("comment_Container", comment_container);
     if (comment == "") {
       return 0;
     }
-    console.log("value", comment);
 
     // Disable the button to prevent multiple clicks
     button.setAttribute("disabled", true);
@@ -113,7 +117,6 @@ document.body.addEventListener("click", async function (event) {
       });
 
       const data = await response.json();
-      console.log(data);
       if (data.status) {
         comment_element.value = "";
         comment_container.innerHTML += data.comment;
@@ -127,57 +130,52 @@ document.body.addEventListener("click", async function (event) {
   }
 });
 
+document.querySelectorAll(".hover_comment").forEach((button) => {
+  button.addEventListener("click", async function () {
+    const commentId = this.getAttribute("data-post-id");
+    const comment_modal = document.getElementById("modal_comment_" + commentId);
+    comment_modal.style.display = "flex";
+    const close_comment_modal = document.getElementById(
+      "closeCommentModal" + commentId
+    );
+    close_comment_modal.onclick = function () {
+      comment_modal.style.display = "none";
+    };
+  });
+});
+document.querySelectorAll(".post_like_btn").forEach((button) => {
+  button.addEventListener("click", async function () {
+    const postId = this.getAttribute("data-post-id");
+    const modal = document.getElementById("modal_user_like_" + postId);
 
-  document.querySelectorAll('.hover_comment').forEach(button => {
-    button.addEventListener('click', async function() {
-      console.log("hello");
-      const commentId = this.getAttribute('data-post-id');
-      const comment_modal = document.getElementById('modal_comment_' + commentId);
-      comment_modal.style.display = "flex";
-      const close_comment_modal = document.getElementById("closeCommentModal" + commentId);
-      console.log(close_comment_modal);
-      close_comment_modal.onclick = function() {
-        console.log("ewewd");
-        comment_modal.style.display = "none";
-      }
-    })
-  })
-  document.querySelectorAll('.post_like_btn').forEach(button => {
-    button.addEventListener('click', async function() {
-      const postId = this.getAttribute('data-post-id');
-      const modal = document.getElementById('modal_user_like_' + postId);
+    const url = "assets/php/ajax.php?userlikes";
 
-      const url = "assets/php/ajax.php?userlikes";
-
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            post_id: postId
-          }), // Send the post ID
-        });
-        const data = await response.json();
-
-        console.log("user", data)
-        const modalContent = document.getElementById('modal_content_' + postId);
-        modalContent.innerHTML = ''; // Clear previous user elements
-        if (data.data.length > 0) {
-          data.data.forEach(user => {
-            const userElement = document.createElement('div');
-            userElement.className = 'follow'; // Add any necessary classes
-            userElement.style.padding = '5px 10px';
-            userElement.style.marginBottom = '15px';
-            const showButton = user.user_id !== data
-              .current_user // Replace 'currentUserID' with your actual variable holding the current user's ID
-            console.log(data.current_user)
-            console.log("id", user.user_id)
-            userElement.innerHTML = `
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          post_id: postId,
+        }), // Send the post ID
+      });
+      const data = await response.json();
+      const modalContent = document.getElementById("modal_content_" + postId);
+      modalContent.innerHTML = ""; // Clear previous user elements
+      if (data.data.length > 0) {
+        data.data.forEach((user) => {
+          const userElement = document.createElement("div");
+          userElement.className = "follow"; // Add any necessary classes
+          userElement.style.padding = "5px 10px";
+          userElement.style.marginBottom = "15px";
+          const showButton = user.user_id !== data.current_user; // Replace 'currentUserID' with your actual variable holding the current user's ID
+          userElement.innerHTML = `
           <div style="display: flex; align-items: center; gap: 10px; flex: 4">
             <a href="?u=${user.username}" style="text-decoration:none">
-              <img class="image" src="assets/images/profiles/${user.profile_pic}" />
+              <img class="image" src="assets/images/profiles/${
+                user.profile_pic
+              }" />
               <div>
                 <span class="name" style="display: block; margin-top: 2.5px; color: gray">
                   ${user.first_name} ${user.last_name}
@@ -189,26 +187,31 @@ document.body.addEventListener("click", async function (event) {
           </div>
          
           </div>
-            ${showButton ? `<button style="flex:1" class="followbtn" data-user-id=${user.user_id}>${user.follow_status == 1 ? 'Unfollow' : 'Follow'}</button>` : ''}
+            ${
+              showButton
+                ? `<button style="flex:1" class="followbtn" data-user-id=${
+                    user.user_id
+                  }>${user.follow_status == 1 ? "Unfollow" : "Follow"}</button>`
+                : ""
+            }
         `;
-            modalContent.appendChild(userElement);
-          })
-        } else {
-          modalContent.innerHTML = 'Be the first one to like'
-        }
-
-        modal.style.display = 'flex'; // Show the modal
-      } catch (error) {
-        console.log("error  getting  user likes by id", error);
+          modalContent.appendChild(userElement);
+        });
+      } else {
+        modalContent.innerHTML = "Be the first one to like";
       }
 
-    });
+      modal.style.display = "flex"; // Show the modal
+    } catch (error) {
+      console.log("error  getting  user likes by id", error);
+    }
   });
+});
 
-  document.querySelectorAll('#closeModal').forEach(button => {
-    button.addEventListener('click', function() {
-      const postId = this.getAttribute('data-post-id');
-      const modal = document.getElementById('modal_user_like_' + postId);
-      modal.style.display = 'none'; // Close the modal
-    });
+document.querySelectorAll("#closeModal").forEach((button) => {
+  button.addEventListener("click", function () {
+    const postId = this.getAttribute("data-post-id");
+    const modal = document.getElementById("modal_user_like_" + postId);
+    modal.style.display = "none"; // Close the modal
   });
+});
