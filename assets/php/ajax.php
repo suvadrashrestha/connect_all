@@ -120,3 +120,46 @@ if (isset($_GET['addComment'])) {
     }
     echo json_encode($response);
 }
+
+
+if (isset($_GET['followers'])) {
+    header('Content-Type: application/json');
+    $response = array();
+    $input = json_decode(file_get_contents('php://input'), true);
+    $user_id = $input['user_id'];
+    try {
+        if (!($user_id)) {
+            throw new Exception("Post ID  or comment is required."); // Throw an exception if post_id is missing
+        }
+        $data= getFollowers($user_id);
+        http_response_code(200);
+        $response['status'] = "success";
+        $response['data'] = $data;
+    } catch (Exception $e) {
+        http_response_code(500);
+        $response['status'] = "error";
+        $response['message'] = $e->getMessage();
+    }
+    echo json_encode($response);
+}
+
+if (isset($_GET['following'])) {
+    header('Content-Type: application/json');
+    $response = array();
+    $input = json_decode(file_get_contents('php://input'), true);
+    $user_id = $input['user_id'];
+    try {
+        if (!($user_id)) {
+            throw new Exception("Post ID  or comment is required."); // Throw an exception if post_id is missing
+        }
+        $data= getFollowing($user_id);
+        http_response_code(200);
+        $response['status'] = "success";
+        $response['data'] = $data;
+    } catch (Exception $e) {
+        http_response_code(500);
+        $response['status'] = "error";
+        $response['message'] = $e->getMessage();
+    }
+    echo json_encode($response);
+}

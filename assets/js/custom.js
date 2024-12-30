@@ -126,3 +126,89 @@ document.body.addEventListener("click", async function (event) {
     }
   }
 });
+
+
+  document.querySelectorAll('.hover_comment').forEach(button => {
+    button.addEventListener('click', async function() {
+      console.log("hello");
+      const commentId = this.getAttribute('data-post-id');
+      const comment_modal = document.getElementById('modal_comment_' + commentId);
+      comment_modal.style.display = "flex";
+      const close_comment_modal = document.getElementById("closeCommentModal" + commentId);
+      console.log(close_comment_modal);
+      close_comment_modal.onclick = function() {
+        console.log("ewewd");
+        comment_modal.style.display = "none";
+      }
+    })
+  })
+  document.querySelectorAll('.post_like_btn').forEach(button => {
+    button.addEventListener('click', async function() {
+      const postId = this.getAttribute('data-post-id');
+      const modal = document.getElementById('modal_user_like_' + postId);
+
+      const url = "assets/php/ajax.php?userlikes";
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            post_id: postId
+          }), // Send the post ID
+        });
+        const data = await response.json();
+
+        console.log("user", data)
+        const modalContent = document.getElementById('modal_content_' + postId);
+        modalContent.innerHTML = ''; // Clear previous user elements
+        if (data.data.length > 0) {
+          data.data.forEach(user => {
+            const userElement = document.createElement('div');
+            userElement.className = 'follow'; // Add any necessary classes
+            userElement.style.padding = '5px 10px';
+            userElement.style.marginBottom = '15px';
+            const showButton = user.user_id !== data
+              .current_user // Replace 'currentUserID' with your actual variable holding the current user's ID
+            console.log(data.current_user)
+            console.log("id", user.user_id)
+            userElement.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px; flex: 4">
+            <a href="?u=${user.username}" style="text-decoration:none">
+              <img class="image" src="assets/images/profiles/${user.profile_pic}" />
+              <div>
+                <span class="name" style="display: block; margin-top: 2.5px; color: gray">
+                  ${user.first_name} ${user.last_name}
+                </span>
+                <span class="email" style="display: block; margin-top: -2px; color: gray">
+                  ${user.username}
+                </span>
+            </a>
+          </div>
+         
+          </div>
+            ${showButton ? `<button style="flex:1" class="followbtn" data-user-id=${user.user_id}>${user.follow_status == 1 ? 'Unfollow' : 'Follow'}</button>` : ''}
+        `;
+            modalContent.appendChild(userElement);
+          })
+        } else {
+          modalContent.innerHTML = 'Be the first one to like'
+        }
+
+        modal.style.display = 'flex'; // Show the modal
+      } catch (error) {
+        console.log("error  getting  user likes by id", error);
+      }
+
+    });
+  });
+
+  document.querySelectorAll('#closeModal').forEach(button => {
+    button.addEventListener('click', function() {
+      const postId = this.getAttribute('data-post-id');
+      const modal = document.getElementById('modal_user_like_' + postId);
+      modal.style.display = 'none'; // Close the modal
+    });
+  });

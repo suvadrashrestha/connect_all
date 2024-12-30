@@ -1,343 +1,275 @@
-
 <?php
 
 global $profile;
-global $profile_post;
+global $posts;
 global $user;
 
 ?>
-      
- 
-      
-      
-     
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        body {
-            background-color: #f4f4f4;
-        }
 
-        /* Profile Header Section */
-        .profile-header {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .profile-info img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-        .profile-details h2 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        .profile-details p {
-            color: #555;
-            font-size: 0.9rem;
-        }
 
-        /* Stats Section */
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin: 15px 0;
-            gap: 20px;
-        }
-        .stats div {
-            text-align: center;
-        }
-        .stats h3 {
-            font-size: 1.2rem;
-            margin: 0;
-        }
-        .stats p {
-            font-size: 0.8rem;
-            color: #555;
-        }
+<div style="display: flex; justify-content: center; align-items: center;">
+    <div style="width: 90%; ">
+        <!-- Profile Top Section -->
+        <section class="profile-top">
+            <div class="profile-header">
+                <img src="assets/images/profiles/<?= $profile['profile_pic'] ?>" alt="Profile" class="profile-pic">
+                <div class="profile-info">
+                    <h1 class="profile-name"><?= $profile['first_name'] ?> <?= $profile['last_name'] ?></h1>
+                    <p class="username"><?= $profile['username'] ?></p>
+                    <div class="profile-stats">
+                        <div class="stat-item" id="postsCount">
+                            <div class="stat-value"><?= count($posts) ?></div>
+                            <div>Posts</div>
+                        </div>
+                        <div class="stat-item" id="followersBtn">
+                            <div class="stat-value"><?= count($profile['followers']) ?></div>
+                            <div>Followers</div>
+                        </div>
+                        <div class="stat-item" id="followingBtn">
+                            <div class="stat-value"><?= count($profile['following']) ?></div>
+                            <div>Following</div>
+                        </div>
+                    </div>
+                    <?php
+                    if (!($user['id'] == $profile['id'])) {
+                        if (checkFollowStatus($profile['id'])) {
+                    ?>
+                            <button class="followbtn unfollow" data-user-id='<?= $profile['id'] ?>' id="followBtn">Unfollow</button>
+                        <?php
+                        } else {
+                        ?>
+                            <button class="followbtn follows" data-user-id='<?= $profile['id'] ?>' id="followBtn">Follow</button>
+                    <?php
+                        }
+                    }
+                    ?>
 
-        /* Buttons */
-        .buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .buttons button {
-            background-color: #c0a6e8;
-            color: #ffffff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            flex: 1;
-        }
-        .buttons button:hover {
-            background-color: #a27cd9;
-        }
 
-        /* Content Section */
-        .container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .left-section,
-        .right-section {
-            display: none; /* Hide left and right sections in mobile view */
-        }
-
-        .main-section {
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden; /* Prevent overflow of child elements */
-            box-sizing: border-box;
-        }
-
-        /* Post Styling */
-        .card.post {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; /* Ensure spacing between posts */
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-        .post-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .post-header img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
-            object-fit: cover;
-        }
-        .post-header h4 {
-            font-size: 1rem;
-            margin: 0;
-        }
-        .post-header small {
-            color: #555;
-            font-size: 0.8rem;
-        }
-        .post-reactions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-            font-size: 0.9rem;
-            color: #555;
-        }
-        .reaction-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-        }
-        .reaction-buttons button {
-            font-size: 0.9rem;
-            padding: 5px 10px;
-            background: none;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .reaction-buttons button:hover {
-            background: #f0f0f0;
-        }
-
-        /* Following Section */
-        .left-section.card.following-list {
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .following-list ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        .following-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px; /* Add spacing between image and name */
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-        .following-list img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        /* Photos Section */
-        .right-section.card.photos-list {
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .photos-list img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        /* Responsive Design */
-        @media screen and (min-width: 768px) {
-            .container {
-                flex-direction: row;
-                gap: 20px;
-            }
-            .left-section,
-            .right-section {
-                display: block; /* Show left and right sections in desktop view */
-            }
-            .left-section {
-                flex: 1;
-            }
-            .main-section {
-                flex: 2;
-            }
-            .right-section {
-                flex: 1;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Profile Header -->
-    <div class="profile-header">
-        <div class="profile-info">
-            <img src="https://picsum.photos/80" alt="Profile Picture">
-            <div class="profile-details">
-                <h2>Pawan Dangi</h2>
-                <p>@Pawan</p>
+                </div>
             </div>
-        </div>
-        <div class="stats">
-            <div>
-                <h3>88</h3>
-                <p>Posts</p>
+        </section>
+
+        <!-- Main Content Section -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="connections-column" id="connectionsColumn">
+                <div class="connections-header">
+                    <h3 id="connectionsTitle">Followers</h3>
+                    <button style="padding: 5px;" user_id=<?= $profile['id'] ?> id="toggleBtn">Switch to Following</button>
+                </div>
+                <div id="connectionsList">
+                <?php
+                    foreach ($profile['followers'] as $users) {
+                    ?>
+                        <div class="connection-item">
+                            <a href="?u=<?= $users['username'] ?>"> <img loading="lazy" style="object-fit: cover;" src="assets/images/profiles/<?=$users['profile_pic']?>"class="connection-pic"></a>
+                            <div>
+                                <strong><?=ucfirst($users['first_name'])?> <?=ucfirst($users['last_name'])?></strong>
+                                <div><?=$users['username']?></div>
+                            </div>
+                           
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
             </div>
-            <div>
-                <h3>88</h3>
-                <p>Following</p>
+
+            <!-- Middle Column -->
+            <div class="posts-column" id="postsColumn">
+                <?php
+                if (($user['id'] == $profile['id'])) {
+                ?>
+                    <div class="newPost" style="margin-bottom: 10px;">
+                        <img style="border: 1px solid gray; object-fit:cover" loading="lazy" class="image" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
+                        <button class="photo_button" id="openModal"> What's on your mind?</button>
+                    </div>
+                <?php
+                }
+                ?>
+
+                <?php
+                foreach ($posts as $post) {
+                    include("parts/profilePosts.php");
+                ?>
+                    <!-- modal for like -->
+                    <div id="modal_user_like_<?= $post['id'] ?>" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Users</h3>
+                                <span style="cursor:pointer" data-post-id="<?= $post['id'] ?>" class="close"
+                                    id="closeModal">&times;</span>
+                            </div>
+                            <div id="modal_content_<?= $post['id'] ?>">
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- modal for comment -->
+                    <div id="modal_comment_<?= $post['id'] ?>" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <?php
+                                $user_name = getUser($post['user_id'])
+                                ?>
+                                <h3><?= ucfirst($user_name['first_name']) ?>'s post</h3>
+                                <span style="cursor:pointer" class="close comment_close"
+                                    id="closeCommentModal<?= $post['id'] ?>">&times;</span>
+                            </div>
+
+                            <div class="commentScroll" id="comment_container_<?= $post['id'] ?>"
+                                style="max-height:60vh;overflow-y:scroll; overflow-wrap:anywhere;">
+                                <?php
+                                $comments = getComments($post['id']);
+                                if (count($comments) < 1) {
+                                ?>
+                                    <p>
+                                        Be the first one to comment
+                                    </p>
+                                <?php
+                                }
+                                foreach ($comments as $comment) {
+                                    $comment_user = getUser($comment['user_id']);
+                                ?> <div style="display: flex;gap:10px ;margin-bottom:10px; ">
+                                        <a href="?u=<?= $comment_user['username'] ?>">
+
+                                            <img class="image" src="assets/images/profiles/<?= $comment_user['profile_pic'] ?>">
+                                        </a>
+                                        <div style="background-color:#e6f1ff; padding:10px; border-radius:10px;width:100%">
+                                            <span><b>
+                                                    <a style="text-decoration:none;color:black"
+                                                        href="?u=<?= $comment_user['username'] ?> ">
+                                                        <?= ucfirst($comment_user['username']) ?>
+                                                    </a>
+                                                </b></span>
+                                            <span style="display:block"><?= $comment['comment'] ?></span>
+                                        </div>
+                                    </div>
+                                <?php
+                                }
+                                ?>
+
+
+                            </div>
+
+                            <div style="display:flex; gap:10px; align-items:center">
+                                <textarea id="comment_value_<?= $post['id'] ?>"
+                                    style="width: 90%; padding:10px ; border-radius:10px" placeholder="write a comment"></textarea>
+                                <button style="height:40px;width:50px" class="comment_btn" data-post-id="<?= $post['id'] ?>">send</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                <?php
+                }
+
+                ?>
+                <div class="posts" style="margin-top: 0px; margin-bottom: 10px; padding:10px">
+                    <h4> No posts</h4>
+                </div>
+
             </div>
-            <div>
-                <h3>88</h3>
-                <p>Followers</p>
+
+            <!-- Right Column -->
+            <div class="photos-column">
+                <div class="connections-header">
+                    <h3>Photos</h3>
+
+                </div>
+                <div class="photos-grid" id="photosGrid">
+                    <?php
+                    foreach ($posts as $post) {
+                        if ($post['post_img']) {
+                    ?>
+                            <div class="photo-item">
+                                <img loading="lazy" src="assets/images/posts/<?= $post['post_img'] ?>" alt="Photo">
+                            </div>
+                    <?php
+                        }
+                    }
+
+                    ?>
+                </div>
+                <div style="padding: 10px;">
+                    No photo
+                </div>
             </div>
-        </div>
-        <div class="buttons">
-            <button>Follow</button>
-            <button>Edit</button>
         </div>
     </div>
+</div>
+<?php
+include 'parts/postmodal.php';
+?>
+<script>
+    const followBtn = document.getElementById('followBtn');
+    if (followBtn) {
+        followBtn.addEventListener('click', () => {
+            if (followBtn.textContent.trim() === 'Follow') {
+                followBtn.textContent = 'UnFollow';
+                followBtn.style.background = '#e91e63'; // Solid color for "Following"
+            } else {
+                followBtn.textContent = 'Follow';
+                followBtn.style.background = 'linear-gradient(to right, #00bcd4, #e91e63)'; // Gradient for "Follow"
+            }
+        });
+    }
 
-    <!-- Content Section -->
-    <div class="container">
-        <!-- Following Section -->
-        <div class="left-section card following-list">
-            <h3>Following</h3>
-            <ul>
-                <li>
-                    <img src="https://via.placeholder.com/40" alt="Jane Smith">
-                    Jane Smith
-                </li>
-                <li>
-                    <img src="https://via.placeholder.com/40" alt="Michael Johnson">
-                    Michael Johnson
-                </li>
-                <li>
-                    <img src="https://via.placeholder.com/40" alt="Chris Evans">
-                    Chris Evans
-                </li>
-                <li>
-                    <img src="https://via.placeholder.com/40" alt="Emily Davis">
-                    Emily Davis
-                </li>
-            </ul>
-        </div>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('toggleBtn'); // Get the toggle button
+        const connectionList = document.getElementById("connectionsList"); // Get the connections list container
+        const connectionsTitle = document.getElementById("connectionsTitle"); // Get the connections list container
 
-        <!-- Main Section -->
-        <div class="main-section">
-            <!-- Posts -->
-            <div class="card post">
-                <div class="post-header">
-                    <img src="https://via.placeholder.com/50" alt="User Image">
-                    <div>
-                        <h4>Pawan Dangi</h4>
-                        <small>Posted 1 hour ago</small>
-                    </div>
-                </div>
-                <p>Hello, it's me Binda. I am new to it.</p>
-                <div class="post-reactions">
-                    <span>❤️ 1 like</span>
-                    <span>1 comment</span>
-                </div>
-                <div class="reaction-buttons">
-                    <button>❤️ Love</button>
-                    <button>💬 Comment</button>
-                </div>
-            </div>
-            <div class="card post">
-                <div class="post-header">
-                    <img src="https://via.placeholder.com/50" alt="User Image">
-                    <div>
-                        <h4>Pawan Dangi</h4>
-                        <small>Posted 3 hours ago</small>
-                    </div>
-                </div>
-                <p>Excited to be part of this community!</p>
-                <div class="post-reactions">
-                    <span>❤️ 5 likes</span>
-                    <span>3 comments</span>
-                </div>
-                <div class="reaction-buttons">
-                    <button>❤️ Love</button>
-                    <button>💬 Comment</button>
-                </div>
-            </div>
-        </div>
+        // Add an event listener to the toggle button
+        toggleBtn.addEventListener('click', async () => {
+            try {
+                const userId = event.target.getAttribute('user_id');
+                console.log("userId", userId);
+                // Determine the current state and toggle it
+                const currentTitleState = connectionsTitle.innerText.trim();
+                const titleNewState = currentTitleState === "Followers" ? "Following" : "Followers";
+                const currentState = toggleBtn.innerText.trim();
+                const newState = currentState === "Switch to Followers" ? "Switch to Following" : "Switch to Followers";
+                toggleBtn.innerText = newState;
+                connectionsTitle.innerText = titleNewState;
 
-        <!-- Photos Section -->
-        <div class="right-section card photos-list">
-            <h3>Photos</h3>
-            <img src="https://picsum.photos/200" alt="Photo 1">
-            <img src="https://picsum.photos/201" alt="Photo 2">
-            <img src="https://picsum.photos/202" alt="Photo 3">
-        </div>
-    </div>
-</body>
+                // Send a request based on the state
 
+                const endpoint = currentState === "Switch to Followers" ? "followers" : "following";
+                const response = await fetch(`assets/php/ajax.php?${endpoint}`, {
+                    method: 'POST', // Assuming you are sending data, change to 'PUT' if required
+                    headers: {
+                        'Content-Type': 'application/json', // Set the content type to JSON
+                    },
+                    body: JSON.stringify({
+                        user_id: userId
+                    }) // Send user_id in the request body
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch connections data.");
+                }
+
+                const data = await response.json(); // Assuming response is JSON
+                // Clear the current list and update it with new data
+                connectionList.innerHTML = data.data
+                    .map(
+                        (user) => `
+                        <div class="connection-item">
+                           <a href="?u=${user.username}"> <img  loading='lazy' style='object-fit:cover' src="assets/images/profiles/${user.profile_pic}" alt="${user.name}" class="connection-pic"> </a>
+                            <div>
+                                <strong>${user.first_name} ${user.last_name}</strong>
+                                <div>${user.username}</div>
+                            </div>
+                        </div>
+                    `
+                    )
+                    .join('');
+                console.log(data);
+            } catch (error) {
+                console.error("Error updating connections list:", error);
+            }
+        });
+    });
+</script>

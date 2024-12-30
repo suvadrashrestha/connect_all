@@ -19,9 +19,6 @@ $comments = getComments($post['id']);
 
       </div>
     </a>
-    <div>
-      <h1>...</h1>
-    </div>
   </div>
 
   <!-- end of profile-bar -->
@@ -99,10 +96,6 @@ $comments = getComments($post['id']);
 
 
   </div>
-
-
-</div>
-</div>
 
 
 </div>

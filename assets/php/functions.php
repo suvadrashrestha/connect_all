@@ -225,17 +225,45 @@ function getFollowsuggestion()
 function getFollowers($user_id)
 {
     global $db;
-    $query = "SELECT * FROM follow_list WHERE user_id=$user_id ";
-    $run = mysqli_query($db, $query);
-    return mysqli_fetch_all($run, true);
+    $query = "SELECT follower_id  FROM follow_list WHERE user_id=$user_id ";
+    $result  = mysqli_query($db, $query);
+    $followers = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $follower_id = $row['follower_id'];
+        
+        // Query to get the user's details (e.g., name and profile_picture)
+        $userQuery = "SELECT first_name,last_name,profile_pic,username FROM users WHERE id = '$follower_id'";
+        $userResult = mysqli_query($db, $userQuery);
+        
+        if ($userRow = mysqli_fetch_assoc($userResult)) {
+            $followers[] = $userRow;  // Add follower details to the array
+        }
+    }
+
+    return $followers;
 }
 
 function getFollowing($user_id)
 {
     global $db;
-    $query = "SELECT * FROM follow_list WHERE follower_id=$user_id ";
-    $run = mysqli_query($db, $query);
-    return mysqli_fetch_all($run, true);
+    $query = "SELECT user_id FROM follow_list WHERE follower_id=$user_id ";
+    $result = mysqli_query($db, $query);
+    $following = [];
+    
+    // Fetch the users' details from the users table
+    while ($row = mysqli_fetch_assoc($result)) {
+        $followed_id = $row['user_id'];
+        
+        // Query to get the user's details (e.g., name and profile_picture)
+        $userQuery = "SELECT first_name,last_name,profile_pic,username  FROM users WHERE id = '$followed_id'";
+        $userResult = mysqli_query($db, $userQuery);
+        
+        if ($userRow = mysqli_fetch_assoc($userResult)) {
+            $following[] = $userRow;  // Add following details to the array
+        }
+    }
+
+    return $following;
 }
 
 // for filtering the suggestion list
@@ -286,6 +314,7 @@ function getPostById($user_id)
     $run = mysqli_query($db, $query);
     return mysqli_fetch_all($run, MYSQLI_ASSOC);  // Fetch as associative array
 }
+
 
 function getUsersByPostId($post_id)
 {

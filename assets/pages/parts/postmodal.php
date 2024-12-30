@@ -60,6 +60,7 @@
     const postBtn = document.getElementById("postBtn");
     const postText = document.getElementById("postText");
     // Function to open the modal
+    if(openModalBtn){
     openModalBtn.onclick = function() {
 
         modal.style.display = "flex";
@@ -69,7 +70,7 @@
             modal.style.display = "none"
         }
     };
-
+    }
 
     // Function to close the modal
 

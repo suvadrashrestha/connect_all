@@ -55,11 +55,11 @@ if (isset($_SESSION['Auth']) && ($user['ac_status'] == 1) && !$pagecount) {
         showPage('navbar');
         showPage('user_not_found');
     } else {
-        $profile_post = getPostById($profile['id']);
+        $posts = getPostById($profile['id']);
         $profile['followers'] = getFollowers($profile["id"]);
         $profile['following'] = getFollowing($profile["id"]);
 
-        showPage('header', ['page_title' => $profile['first_name'] . ' ' . $profile['last_name'], 'css' => ['navbar','profile']]);
+        showPage('header', ['page_title' => $profile['first_name'] . ' ' . $profile['last_name'], 'css' => ['navbar','profile','feed']]);
         showPage('navbar');
         showPage('profile');
         // print_r($profile);

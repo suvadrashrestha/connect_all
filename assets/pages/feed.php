@@ -148,7 +148,7 @@ include 'parts/postmodal.php';
 
 
 
-
+<!-- 
 <script>
   document.querySelectorAll('.hover_comment').forEach(button => {
     button.addEventListener('click', async function() {
@@ -234,4 +234,4 @@ include 'parts/postmodal.php';
       modal.style.display = 'none'; // Close the modal
     });
   });
-</script>
+</script> -->
