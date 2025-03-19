@@ -96,6 +96,9 @@ document.body.addEventListener("click", async function (event) {
     const url = "assets/php/ajax.php?addComment";
     const comment_element = document.getElementById("comment_value_" + post_id);
     const comment = comment_element.value;
+    const comment_count=document.getElementById('comment_' + post_id);
+    console.log("zxcxzc",comment_count);
+  
     const comment_container = document.getElementById(
       "comment_container_" + post_id
     );
@@ -120,6 +123,7 @@ document.body.addEventListener("click", async function (event) {
       if (data.status) {
         comment_element.value = "";
         comment_container.innerHTML += data.comment;
+        comment_count.textContent=data.count +" " +"comment";
       }
     } catch (error) {
       console.log("Error:", error);

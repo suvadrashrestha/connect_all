@@ -86,13 +86,6 @@ global $follow_suggestions;
             style="max-height:60vh;overflow-y:scroll; overflow-wrap:anywhere;">
             <?php
             $comments = getComments($post['id']);
-            if (count($comments) < 1) {
-            ?>
-              <p>
-                Be the first one to comment
-              </p>
-            <?php
-            }
             foreach ($comments as $comment) {
               $comment_user = getUser($comment['user_id']);
             ?> <div style="display: flex;gap:10px ;margin-bottom:10px; ">
@@ -120,7 +113,7 @@ global $follow_suggestions;
           <div style="display:flex; gap:10px; align-items:center">
             <textarea id="comment_value_<?= $post['id'] ?>"
               style="width: 90%; padding:10px ; border-radius:10px" placeholder="write a comment"></textarea>
-            <button style="height:40px" class="comment_btn" data-post-id="<?= $post['id'] ?>">send</button>
+            <button style="height:40px;padding: 5px 10px;" class="comment_btn" data-post-id="<?= $post['id'] ?>">send</button>
           </div>
 
 

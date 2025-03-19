@@ -55,7 +55,7 @@ if (isset($_SESSION['forgot_code']) && (!isset($_SESSION['auth_temp']))) {
         <p style="text-align: center;margin:20px 0px;">Enter new password</p>
 
         <div class="inputBox" style="margin:0px">
-          <input type="password" name="password" class="email" required onpaste="off">
+          <input value="<?= showFormData('password') ?>" type="password" name="password" class="email" required onpaste="off">
           <label for="password">New Password</label>
         </div>
 
@@ -66,9 +66,8 @@ if (isset($_SESSION['forgot_code']) && (!isset($_SESSION['auth_temp']))) {
       <?php
       }
       ?>
-
-
-
     </form>
+    <br>
+    <a style="color:#19e6d5; cursor:pointer;text-decoration:none" href="?login">Back to login page</a>
   </div>
 </section>

@@ -23,6 +23,28 @@ function getNonAdminUsers()
         return [];  // Return an empty array if no non-admin users are found
     }
 }
+function getRecentUsers()
+{
+    // Global database connection variable
+    global $db;
+
+    // SQL query to fetch all non-admin users
+    $sql = "SELECT * FROM users WHERE is_admin='0' ORDER BY created_at DESC LIMIT 5";
+    // Execute the query
+    $result = $db->query($sql);
+
+    // Check if the query was successful
+    if ($result->num_rows > 0) {
+        // Store all users in an array
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+        return $users;  // Return the array of non-admin users
+    } else {
+        return [];  // Return an empty array if no non-admin users are found
+    }
+}
 
 function getAdminUsers()
 {
@@ -54,7 +76,42 @@ function getPosts()
     global $db;
 
     // SQL query to get all posts
-    $sql = "SELECT * FROM posts";
+    $sql = "SELECT posts.*, users.username 
+    FROM posts 
+    JOIN users ON posts.user_id = users.id
+    ORDER BY posts.created_at DESC";
+
+
+    // Execute the query
+    $result = $db->query($sql);
+
+    // Check if the query was successful
+    if ($result->num_rows > 0) {
+        // Create an empty array to store posts
+        $posts = [];
+
+        // Fetch all rows and add them to the $posts array
+        while ($row = $result->fetch_assoc()) {
+            $posts[] = $row;
+        }
+
+        // Return the array of posts
+        return $posts;
+    } else {
+        return [];  // Return an empty array if no posts are found
+    }
+}
+function getRecentPosts()
+{
+    // Global database connection variable
+    global $db;
+
+    $sql = "SELECT posts.*, users.username 
+    FROM posts 
+    JOIN users ON posts.user_id = users.id 
+    ORDER BY posts.created_at DESC 
+    LIMIT 5";  
+
 
     // Execute the query
     $result = $db->query($sql);

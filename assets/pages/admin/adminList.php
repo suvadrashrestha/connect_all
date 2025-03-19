@@ -51,8 +51,15 @@ foreach ($users as $key => $user) {
                             <td><img height="20px" width="20px" src="assets/images/profiles/<?= $user['profile_pic'] ?>" />
                             </td>
                             <td>
+                            <?php
+                            if($user['id']!==$_SESSION['userdata']['id']){
+                                ?>
                                 <a class="delete" username="<?= htmlspecialchars($user['username']) ?>"
                                     user_id="<?= htmlspecialchars($user['id']) ?>">Remove</a>
+                            
+                            <?php
+                               } 
+                            ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

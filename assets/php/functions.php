@@ -1,23 +1,24 @@
 <?php
 
 require_once 'config.php';
-function checkStatus(){
+function checkStatus()
+{
     if (isset($_SESSION['userdata'])) {
-    global $db;
-    $user_id = $_SESSION['userdata']['id'];
+        global $db;
+        $user_id = $_SESSION['userdata']['id'];
 
-    $query = "SELECT ac_status FROM users WHERE id = $user_id";
-    $result = $db->query($query);
-    $user_check = $result->fetch_assoc();
+        $query = "SELECT ac_status FROM users WHERE id = $user_id";
+        $result = $db->query($query);
+        $user_check = $result->fetch_assoc();
 
-    if ($user_check['ac_status'] == '2') {
-        echo "sahdbhasvdhsadjhsadbsjabd";
-        // session_destroy();
-        // showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
-        // showPage('login');
-        // exit();
+        if ($user_check['ac_status'] == '2') {
+            echo "sahdbhasvdhsadjhsadbsjabd";
+            // session_destroy();
+            // showPage('header', ['page_title' => 'connect - login', 'css' => 'login']);
+            // showPage('login');
+            // exit();
+        }
     }
-}
 }
 
 function showPage($page, $data = "")
@@ -158,8 +159,38 @@ function validateSignUpForm($form_data)
 {
     $response = array();
     $response['status'] = true;
-    if (!$form_data["password"]) {
+    if (empty($form_data["password"])) {
         $response['msg'] = "password is required";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
+    if (strlen($form_data["password"]) < 8) {
+        $response['msg'] = "Password must be at least 8 characters long";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
+    if (!preg_match('/[A-Z]/', $form_data["password"])) {
+        $response['msg'] = "Password must contain at least one uppercase letter";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
+    if (!preg_match('/[a-z]/', $form_data["password"])) {
+        $response['msg'] = "Password must contain at least one lowercase letter";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
+    if (!preg_match('/\d/', $form_data["password"])) {
+        $response['msg'] = "Password must contain at least one number";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
+    if (!preg_match('/[\W_]/', $form_data["password"])) {
+        $response['msg'] = "Password must contain at least one special character";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
+    if (strpos($form_data["password"], ' ') !== false) {
+        $response['msg'] = "Password should not contain spaces";
         $response['status'] = false;
         $response['field'] = 'password';
     }
@@ -247,11 +278,11 @@ function getFollowers($user_id)
     $followers = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $follower_id = $row['follower_id'];
-        
+
         // Query to get the user's details (e.g., name and profile_picture)
         $userQuery = "SELECT first_name,last_name,profile_pic,username FROM users WHERE id = '$follower_id'";
         $userResult = mysqli_query($db, $userQuery);
-        
+
         if ($userRow = mysqli_fetch_assoc($userResult)) {
             $followers[] = $userRow;  // Add follower details to the array
         }
@@ -266,15 +297,15 @@ function getFollowing($user_id)
     $query = "SELECT user_id FROM follow_list WHERE follower_id=$user_id ";
     $result = mysqli_query($db, $query);
     $following = [];
-    
+
     // Fetch the users' details from the users table
     while ($row = mysqli_fetch_assoc($result)) {
         $followed_id = $row['user_id'];
-        
+
         // Query to get the user's details (e.g., name and profile_picture)
         $userQuery = "SELECT first_name,last_name,profile_pic,username  FROM users WHERE id = '$followed_id'";
         $userResult = mysqli_query($db, $userQuery);
-        
+
         if ($userRow = mysqli_fetch_assoc($userResult)) {
             $following[] = $userRow;  // Add following details to the array
         }
@@ -362,35 +393,44 @@ function getUsersByPostId($post_id)
 
 function validatePassword($password)
 {
-    // Define the validation criteria
-    $errors = [];
-
-    // Minimum length check (8 characters)
+    $response = array();
+    $response['status'] = true;
+    if (!$password) {
+        $response['msg'] = "password is required";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
     if (strlen($password) < 8) {
-        $errors[] = "Password must be at least 8 characters long.";
+        $response['msg'] = "Password must be at least 8 characters long";
+        $response['status'] = false;
+        $response['field'] = 'password';
     }
-
-    // Check for at least one uppercase letter
     if (!preg_match('/[A-Z]/', $password)) {
-        $errors[] = "Password must contain at least one uppercase letter.";
+        $response['msg'] = "Password must contain at least one uppercase letter";
+        $response['status'] = false;
+        $response['field'] = 'password';
     }
-
-    // Check for at least one lowercase letter
     if (!preg_match('/[a-z]/', $password)) {
-        $errors[] = "Password must contain at least one lowercase letter.";
+        $response['msg'] = "Password must contain at least one lowercase letter";
+        $response['status'] = false;
+        $response['field'] = 'password';
     }
-
-    // Check for at least one number
-    if (!preg_match('/[0-9]/', $password)) {
-        $errors[] = "Password must contain at least one number.";
+    if (!preg_match('/\d/', $password)) {
+        $response['msg'] = "Password must contain at least one number";
+        $response['status'] = false;
+        $response['field'] = 'password';
     }
-
-    // Check for at least one special character
-    if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
-        $errors[] = "Password must contain at least one special character.";
+    if (!preg_match('/[\W_]/', $password)) {
+        $response['msg'] = "Password must contain at least one special character";
+        $response['status'] = false;
+        $response['field'] = 'password';
     }
-
-    return $errors;
+    if (strpos($password, ' ') !== false) {
+        $response['msg'] = "Password should not contain spaces";
+        $response['status'] = false;
+        $response['field'] = 'password';
+    }
+    return $response;
 }
 
 // for validating login form 
@@ -533,12 +573,12 @@ function updateProfile($data, $image)
     if ($image['name']) {
         // Get the MIME type of the uploaded file
         $mimeType = mime_content_type($image['tmp_name']);
-    
+
         // Verify that the file is an image
         if (strpos($mimeType, 'image/') !== 0) {
             die("The uploaded file is not a valid image.");
         }
-    
+
         // Create an image resource based on the MIME type
         $img = null;
         switch ($mimeType) {
@@ -558,12 +598,12 @@ function updateProfile($data, $image)
             default:
                 die("Unsupported image format.");
         }
-    
+
         // Ensure the image resource was created successfully
         if (!$img) {
             die("Failed to process the uploaded image. The file might be corrupted.");
         }
-    
+
         // Adjust orientation for JPEG images using EXIF data
         if ($mimeType === 'image/jpeg' || $mimeType === 'image/pjpeg') {
             $exif = @exif_read_data($image['tmp_name']);
@@ -581,22 +621,22 @@ function updateProfile($data, $image)
                 }
             }
         }
-    
+
         // Generate a new name for the image
         $image_name = time() . '.webp';
         $image_dir = "../images/profiles/" . $image_name;
-    
+
         // Convert the image to WebP format
         if (!imagewebp($img, $image_dir, 80)) { // Quality: 80
             die("Failed to save the image.");
         }
-    
+
         // Free up memory
         imagedestroy($img);
-    
+
         echo "Image uploaded and saved successfully.";
     }
-    
+
     $profile_pic = isset($image_name) ? ",profile_pic='$image_name'" : "";
     $query = "UPDATE users SET first_name = '$first_name',gender='$gender', last_name = '$last_name', username = '$username' $profile_pic
                 WHERE id = '" . $_SESSION['userdata']['id'] . "'";
@@ -631,12 +671,12 @@ function createPost($text, $image)
     if ($image['name']) {
         // Get the MIME type of the uploaded file
         $mimeType = mime_content_type($image['tmp_name']);
-    
+
         // Verify that the file is an image
         if (strpos($mimeType, 'image/') !== 0) {
             die("The uploaded file is not a valid image.");
         }
-    
+
         // Create an image resource based on the MIME type
         $img = null;
         switch ($mimeType) {
@@ -656,12 +696,12 @@ function createPost($text, $image)
             default:
                 die("Unsupported image format.");
         }
-    
+
         // Ensure the image resource was created successfully
         if (!$img) {
             die("Failed to process the uploaded image. The file might be corrupted.");
         }
-    
+
         // Adjust orientation for JPEG images using EXIF data
         if ($mimeType === 'image/jpeg' || $mimeType === 'image/pjpeg') {
             $exif = @exif_read_data($image['tmp_name']);
@@ -679,22 +719,22 @@ function createPost($text, $image)
                 }
             }
         }
-    
+
         // Generate a new name for the image
         $image_name = time() . '.webp';
         $image_dir = "../images/posts/" . $image_name;
-    
+
         // Convert the image to WebP format
         if (!imagewebp($img, $image_dir, 80)) { // Quality: 80
             die("Failed to save the image.");
         }
-    
+
         // Free up memory
         imagedestroy($img);
-    
+
         echo "Image uploaded and saved successfully.";
     }
-    
+
 
     // If there's no image, set $image_name to NULL
     $image_name = isset($image_name) ? $image_name : NULL;

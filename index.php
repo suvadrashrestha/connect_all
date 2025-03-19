@@ -21,7 +21,7 @@ $pagecount = count($_GET);
 // Manage Pages
 if (isset($_SESSION['Auth'])) {
     // Authenticated user logic
-    if ($user['ac_status'] == 1) {
+    if ($user['ac_status'] == 1 && !isset($_SESSION['is_admin'])) {
         if (!$pagecount) {
             // Home page
             showPage('header', ['page_title' => 'connect - home', 'css' => ['navbar', 'feed']]);
@@ -42,7 +42,7 @@ if (isset($_SESSION['Auth'])) {
                 } else {
                     $search_param = $_GET['search'];
                     $search_result = searchUser($search_param);
-                    showPage('header', ['page_title' => 'search result', 'css' => ['navbar', 'feed']]);
+                    showPage('header', ['page_title' => 'search result', 'css' => ['navbar', 'search']]);
                     showPage('navbar');
                     showPage('search_result');
                 }
@@ -65,37 +65,39 @@ if (isset($_SESSION['Auth'])) {
                     showPage('navbar');
                     showPage('profile');
                 }
-            } elseif (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
-                // Admin logic
-                if (isset($_GET['adminDashboard'])) {
-                    $currentPage = 'dashboard';
-                    showPage('header', ['page_title' => 'connect - admin dashboard', 'css' => ['navbar', 'admindashboard']]);
-                    showPage('admin/navbar');
-                    showPage('admin/dashboard');
-                } elseif (isset($_GET['usersList'])) {
-                    $currentPage = 'users';
-                    showPage('header', ['page_title' => 'connect - user list', 'css' => ['navbar', 'admindashboard']]);
-                    showPage('admin/navbar');
-                    showPage('admin/usersList');
-                } elseif (isset($_GET['adminList'])) {
-                    $currentPage = 'admin';
-                    showPage('header', ['page_title' => 'connect - admin list', 'css' => ['navbar', 'admindashboard']]);
-                    showPage('admin/navbar');
-                    showPage('admin/adminList');
-                } elseif (isset($_GET['postList'])) {
-                    $currentPage = 'posts';
-                    showPage('header', ['page_title' => 'connect - posts list', 'css' => ['navbar', 'admindashboard', 'feed']]);
-                    showPage('admin/navbar');
-                    showPage('admin/postList');
-                } else {
-                    showPage('header', ['page_title' => 'connect - Not - found', 'css' => [ 'not-found']]);
-                    showPage('not-found');
-                }
-            } else {
+            }else {
                 showPage('header', ['page_title' => 'connect - Not - found', 'css' => [ 'not-found']]);
                 showPage('not-found');
             }
         }
+    } 
+    elseif (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
+        if (!$pagecount) {
+            $currentPage = 'dashboard';
+            showPage('header', ['page_title' => 'connect - admin dashboard', 'css' => ['adminNavbar', 'admindashboard']]);
+            showPage('admin/navbar');
+            showPage('admin/dashboard');
+        } else {
+          if (isset($_GET['usersList'])) {
+            $currentPage = 'users';
+            showPage('header', ['page_title' => 'connect - user list', 'css' => ['adminNavbar', 'admindashboard']]);
+            showPage('admin/navbar');
+            showPage('admin/usersList');
+        } elseif (isset($_GET['adminList'])) {
+            $currentPage = 'admin';
+            showPage('header', ['page_title' => 'connect - admin list', 'css' => ['adminNavbar', 'admindashboard']]);
+            showPage('admin/navbar');
+            showPage('admin/adminList');
+        } elseif (isset($_GET['postList'])) {
+            $currentPage = 'posts';
+            showPage('header', ['page_title' => 'connect - posts list', 'css' => ['adminNavbar', 'admindashboard', 'feed']]);
+            showPage('admin/navbar');
+            showPage('admin/postList');
+        } else {
+            showPage('header', ['page_title' => 'connect - Not - found', 'css' => [ 'not-found']]);
+            showPage('not-found');
+        }
+    }
     } elseif ($user['ac_status'] == 0 && (!$pagecount || isset($_GET['resended']))) {
         // Email verification
         showPage('header', ['page_title' => 'connect - verify your email', 'css' => 'login']);

@@ -8,7 +8,7 @@ global $user;
 
 
 <div style="display: flex; justify-content: center; align-items: center;">
-    <div style="width: 90%; ">
+    <div class="profile_container">
         <!-- Profile Top Section -->
         <section class="profile-top">
             <div class="profile-header">
@@ -130,13 +130,6 @@ global $user;
                                 style="max-height:60vh;overflow-y:scroll; overflow-wrap:anywhere;">
                                 <?php
                                 $comments = getComments($post['id']);
-                                if (count($comments) < 1) {
-                                ?>
-                                    <p>
-                                        Be the first one to comment
-                                    </p>
-                                <?php
-                                }
                                 foreach ($comments as $comment) {
                                     $comment_user = getUser($comment['user_id']);
                                 ?> <div style="display: flex;gap:10px ;margin-bottom:10px; ">

@@ -2,7 +2,7 @@
     global $currentPage;
     ?>
    <!-- Hamburger Icon (Visible on small screens) -->
-   <div class="hamburger">
+   <div class="hamburger" style="margin-top: 8px;">
        <span></span>
        <span></span>
        <span></span>
@@ -13,7 +13,7 @@
        <h2>Menu</h2>
        <ul>
            <li>
-               <a href="?adminDashboard"
+               <a href="?"
                    class="menu-item <?php if ($currentPage == 'dashboard') echo 'active'; ?>">Dashboard</a>
            </li>
            <li>

@@ -23,12 +23,7 @@ if (isset($_GET['signup'])) {
 
 //for managing login
 if (isset($_GET['login'])) {
-
-    // print_r(checkUser($_POST));
     $response = validateLoginForm($_POST);
-    // echo "sdcsthis is sme thingd";
-    // echo "<pre>";
-    // print_r($response);
     if ($response['status']) {
         $_SESSION['Auth'] = true;
         $_SESSION['userdata'] = $response['user'];
@@ -131,21 +126,21 @@ if (isset($_GET['changepassword'])) {
         $_SESSION['error'] = $response;
         header('location:../../?forgotpassword');
     } else {
-        resetPassword($_SESSION['forgot_email'], $_POST['password']);
-        header('location:../../?reseted');
+        $response = validatePassword($_POST['password']);
+        if($response['status']){
+            resetPassword($_SESSION['forgot_email'], $_POST['password']);
+            header('location:../../?reseted');
+        } else {
+            $_SESSION['error'] = $response;
+            $_SESSION['formdata'] = $_POST;
+            header('location:../../?forgotpassword');
+        }
+     
     }
 }
 
 if (isset($_GET['updateprofile'])) {
-    // print_r($_POST); 
-    //   print_r($_FILES);
-//  echo "sjc";
-//  var_dump($_POST);
-var_dump($_FILES['profile_pic']);
-
     $response = validateUpdateForm($_POST, $_FILES['profile_pic']);
-    // print_r($response);
-
     if ($response['status']) {
         if (updateprofile($_POST, $_FILES['profile_pic'])) {
             header("location: ../../?editprofile=success");
@@ -162,17 +157,10 @@ var_dump($_FILES['profile_pic']);
 
 // For managing add post
 if (isset($_GET['addpost'])) {
-    // echo "<pre>";
-    // print_r($_FILES);
-    // $image= basename($_FILES['post_img']['name']);
-
-    // $type= strtolower(pathinfo($image,PATHINFO_EXTENSION));
-    // echo "$type";
     $response = ['status' => true];
     if (isset($_FILES['post_img']) && $_FILES['post_img']['error'] == 0) {
         $response = validatePostImage($_FILES['post_img']);
     }
-
     if ($response["status"]) {
         if (createPost($_POST, $_FILES['post_img'] ?? null)) {
             header("location:../../");

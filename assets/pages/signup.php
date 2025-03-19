@@ -13,7 +13,7 @@ if (isset($_SESSION['unique_id'])) {
 <div class="registration-container">
     <!-- Branding Section -->
     <div class="branding">
-        <img  src="assets/images/logo-color.png"  alt="Connect-All Logo">
+        <div class="infinity-symbol"></div>
         <h1>Connect-All</h1>
         <p>Building connections for a better tomorrow. Join us and stay connected with your world.</p>
     </div>
@@ -23,22 +23,22 @@ if (isset($_SESSION['unique_id'])) {
         <form method="POST" action="assets/php/actions.php?signup" id="form">
             <div class="form-group">
                 <label for="first_name">First Name</label>
-                <input type="text" name="first_name" value="<?= showFormData('first_name') ?>" placeholder="First name" required pattern="[a-zA-Z'-'\s]*">
+                <input type="text" name="first_name" value="<?= showFormData('first_name') ?>" placeholder="First name"  pattern="[a-zA-Z'-'\s]*">
                 <?= showError('first_name') ?>
             </div>
             <div class="form-group">
                 <label for="last_name">Last Name</label>
-                <input type="text" name="last_name" value="<?= showFormData('last_name') ?>" placeholder="Last Name" required pattern="[a-zA-Z'-'\s]*">
+                <input type="text" name="last_name" value="<?= showFormData('last_name') ?>" placeholder="Last Name"  pattern="[a-zA-Z'-'\s]*">
                 <?= showError('last_name') ?>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" value="<?= showFormData('email') ?>" name="email" placeholder="Enter your email" required>
-                    <?= showError('email') ?>
+                <input type="email" value="<?= showFormData('email') ?>" name="email" placeholder="Enter your email" >
+                <?= showError('email') ?>
             </div>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" name="username" value="<?= showFormData('username') ?>" placeholder="Username" required pattern="[a-zA-Z'-'\s]*">
+                <input type="text" name="username" value="<?= showFormData('username') ?>" placeholder="Username"  >
                 <?= showError('username') ?>
             </div>
             <div class="form-group">
@@ -49,7 +49,7 @@ if (isset($_SESSION['unique_id'])) {
             <div class="form-group">
                 <label>Gender</label>
                 <div class="gender-options">
-           
+
 
                     <label><input type="radio" name="gender" value="1" <?= showFormData('gender') == 1 ? 'checked' : '' ?>> Male</label>
                     <label><input type="radio" name="gender" value="2" <?= showFormData('gender') == 2 ? 'checked' : '' ?>> Female</label>
@@ -63,8 +63,3 @@ if (isset($_SESSION['unique_id'])) {
         </div>
     </div>
 </div>
-
-
-
-           
-                       

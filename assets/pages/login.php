@@ -11,9 +11,7 @@ if (isset($_SESSION['unique_id'])) {
 ?>
 
 <div class="container">
-    <div class="logo">
-        <img src="assets/images/logo-color.png" alt="Connect-All Logo">
-    </div>
+    <div class="infinity-symbol"></div>
     <h2>Welcome!</h2>
     <p class="tagline">Building connections for a better tomorrow.</p>
     <form method="POST" id="loginForm" action="assets/php/actions.php?login">
@@ -40,4 +38,3 @@ if (isset($_SESSION['unique_id'])) {
         <p>Powered by <a href="#">Connect-All</a></p>
     </footer>
 </div>
-

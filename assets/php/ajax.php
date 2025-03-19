@@ -83,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_GET['like'])) {
 
 // for managing  comments 
 if (isset($_GET['addComment'])) {
+    global $db;
     header('Content-Type: application/json');
     $response = array();
     $input = json_decode(file_get_contents('php://input'), true);
@@ -94,24 +95,26 @@ if (isset($_GET['addComment'])) {
         }
         if (addcomment($post_id, $comment)) {
             $comment_user = getUser($_SESSION['userdata']['id']);
+            $sql = "SELECT COUNT(*) FROM comments WHERE post_id='$post_id'";
+            $result = mysqli_query($db, $sql);
+            if ($result) {
+                $response['count'] = mysqli_fetch_row($result)[0]; // Directly get the count
+            }
             $response['status'] = true;
             http_response_code(200);
             $response['comment'] = '
                <div style="display: flex;gap:10px ;margin-bottom:10px; ">
-                        <a href="?u=' . $comment_user['username'] . '">
-
-<img class="image" src="assets/images/profiles/' . $comment_user['profile_pic'] . '">
-</a>
-<div style="background-color:#e6f1ff; padding:10px; border-radius:10px;width:100%">
-    <span><b>
-            <a style="text-decoration:none;color:black" href="?u=' . $comment_user['username'] . ' ">
-' . ucfirst($comment_user['username']) . '
-</a>
-</b></span>
-<span style="display:block">' . $comment . '</span>
-</div>
-</div>
-';
+                   <a href="?u=' . $comment_user['username'] . '">
+                       <img class="image" src="assets/images/profiles/' . $comment_user['profile_pic'] . '">
+                   </a>
+                   <div style="background-color:#e6f1ff; padding:10px; border-radius:10px;width:100%">
+                       <span> 
+                           <b><a style="text-decoration:none;color:black" href="?u=' . $comment_user['username'] . ' ">' . ucfirst($comment_user['username']) . '
+                            </a></b>
+                       </span>
+                       <span style="display:block">' . $comment . '</span>
+                   </div>
+               </div>';
         }
     } catch (Exception $e) {
         http_response_code(500);
@@ -131,7 +134,7 @@ if (isset($_GET['followers'])) {
         if (!($user_id)) {
             throw new Exception("Post ID  or comment is required."); // Throw an exception if post_id is missing
         }
-        $data= getFollowers($user_id);
+        $data = getFollowers($user_id);
         http_response_code(200);
         $response['status'] = "success";
         $response['data'] = $data;
@@ -152,7 +155,7 @@ if (isset($_GET['following'])) {
         if (!($user_id)) {
             throw new Exception("Post ID  or comment is required."); // Throw an exception if post_id is missing
         }
-        $data= getFollowing($user_id);
+        $data = getFollowing($user_id);
         http_response_code(200);
         $response['status'] = "success";
         $response['data'] = $data;

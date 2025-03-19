@@ -1,9 +1,7 @@
 <?php $posts = getPosts();
-// var_dump($posts)
 ?>
 <?php
 global $user;
-global $posts;
 global $follow_suggestions;
 ?>
 <div class="container">
@@ -123,8 +121,13 @@ global $follow_suggestions;
                             </td>
                             <td> <?= ucfirst($post['username']) ?> </td>
 
-                            <td> <span style="cursor:pointer" data-post-id="<?= $post['id'] ?>" class="post_like_btn"
-                                    id="like_<?= $post['id'] ?>"> <?= count($likes) ?> </span></td>
+                            <td> <span style="cursor:pointer" data-post-id="<?= $post['id'] ?>" class="post_like_btn_2"
+                                    id="like_<?= $post['id'] ?>"> <?php 
+                                    // echo "<pre>" ;
+                                    //  print_r($likes);
+                                    //  echo "</pre>" ; 
+                                     echo count($likes);
+                                      ?></span></td>
                             <td>
                                 <p style="padding-right:20px; cursor:pointer" data-post-id="<?= $post['id'] ?>" class="hover_comment" id="comment_<?= $post['id'] ?>">
                                     <?= count($comments) ?>
@@ -149,19 +152,18 @@ global $follow_suggestions;
 <script>
     document.querySelectorAll('.hover_comment').forEach(button => {
         button.addEventListener('click', async function() {
-            console.log("hello");
+            
             const commentId = this.getAttribute('data-post-id');
             const comment_modal = document.getElementById('modal_comment_' + commentId);
             comment_modal.style.display = "flex";
             const close_comment_modal = document.getElementById("closeCommentModal" + commentId);
             console.log(close_comment_modal);
             close_comment_modal.onclick = function() {
-                console.log("ewewd");
                 comment_modal.style.display = "none";
             }
         })
     })
-    document.querySelectorAll('.post_like_btn').forEach(button => {
+    document.querySelectorAll('.post_like_btn_2').forEach(button => {
         button.addEventListener('click', async function() {
             const postId = this.getAttribute('data-post-id');
             const modal = document.getElementById('modal_user_like_' + postId);
@@ -183,6 +185,7 @@ global $follow_suggestions;
                 const modalContent = document.getElementById('modal_content_' + postId);
                 modalContent.innerHTML = ''; // Clear previous user elements
                 if (data.data.length > 0) {
+                    console.log("data",data.data);
                     data.data.forEach(user => {
                         const userElement = document.createElement('div');
                         userElement.className = 'follow'; // Add any necessary classes

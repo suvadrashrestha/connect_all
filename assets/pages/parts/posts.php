@@ -10,7 +10,7 @@ $comments = getComments($post['id']);
 <div class="posts">
   <div class="profile-bar">
     <a href="?u=<?= $post['username'] ?>" style="text-decoration:none ; display:inline; color:black">
-      <div style="display: flex; gap: 10px; align-items: center">
+      <div style="display: flex; margin-top: 13px;gap: 10px; align-items: center">
         <img loading='lazy' style="border: 1px solid gray; object-fit:cover" src="assets/images/profiles/<?= $post['profile_pic'] ?>"
           width="40px" height="40px" class="profile-pic" />
 
